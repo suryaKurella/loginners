@@ -8,6 +8,7 @@ import Login from './Login'
 import SignUpSignIn from './SignUpSignIn'
 import Employees from "../Pages/Employees/Employees";
 
+
 function App() {
 
     return (
@@ -16,8 +17,8 @@ function App() {
         <>
 
 
-            <SignUpSignIn/>
-            {/*<Employees/>*/}
+            {/*<SignUpSignIn/>*/}
+            <Employees/>
 
 
         </>

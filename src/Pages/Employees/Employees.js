@@ -2,31 +2,30 @@ import React from 'react';
 
 import EmployeeForm from './EmployeeForm'
 
-import {Grid, TextField, makeStyles, Paper} from "@material-ui/core"
-
+import {Grid, TextField, Paper, Card} from "@material-ui/core"
+import { makeStyles } from '@material-ui/styles';
 const Employees = () => {
 
 
-    const useStyle = makeStyles(theme=>(
-        {
-            pageContent:{
-                margin:theme.spacing(5),
-                padding: theme.spacing(3)
-            }
-        }
-    ))
+    // const useStyle = makeStyles(theme=>(
+    //     {
+    //         gridAlign: {
+    //             pageContent: {
+    //                 margin: theme.spacing(5),
+    //                 padding: theme.spacing(3)
+    //             }
+    //         }
+    //     }
+    // ))
 
 
-    const classes = useStyle()
+    // const classes = useStyle()
 
     return (
-        <div>
 
-            <Paper className={classes.pageContent}>
+            <div>
                 <EmployeeForm/>
-            </Paper>
-
-        </div>
+            </div>
     );
 };
 

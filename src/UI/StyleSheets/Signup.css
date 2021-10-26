@@ -16,7 +16,7 @@
 .announcement {
     height: 100vh;
     width: 100%;
-    background-image: url('../female announcement.jpg');
+    background-image: url('../images/female announcement.jpg');
     background-size: cover;
 }
 

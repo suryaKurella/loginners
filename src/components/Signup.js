@@ -44,7 +44,8 @@ const Signup = () => {
             await signup(emailRef.current.value, passwordRef.current.value)
             history.push('/')
         } catch (e) {
-            setError("Failed to create an Account")
+            // setError("Failed to create an Account")
+            setError("User Already Exists! Please Sign in")
         }
 
         setLoading(false)
@@ -88,7 +89,6 @@ const Signup = () => {
                             <FrontPageContent/>
                         </div>
                     </Card>
-
                 </Col>
 
 
@@ -115,10 +115,10 @@ const Signup = () => {
                                         <Form.Label className={'text-white'}>Email</Form.Label>
 
 
-
                                         <Form.Control
                                             className={'boomer border border-top-0 border-left-0 border-right-0'}
-                                            placeholder={'Email Address'} type={'email'} ref={emailRef} required/>
+                                            placeholder={'Email Address'} autoComplete="new-password"
+                                            type={'email'} ref={emailRef} required/>
                                     </Form.Group>
                                     <Form.Group id={'password'} className={'ml-5 mr-5'}>
                                         <Form.Label className={'text-white'}>Password</Form.Label>

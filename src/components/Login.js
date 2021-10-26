@@ -60,19 +60,21 @@ const Login = (props) => {
                             <Button disabled={loading} className={`${buttoners.submitBtn} submit-btn w-100 bg-success shadow-none`} type={'submit'}>Log
                                 in</Button>
                         </Form.Group>
+
+                        <div className={'w-100 text-center mt-2 text-white'}>
+
+                            {/*Need an account ? <Link to={'/signup'}>Sign Up</Link>*/}
+                            Need an account ? <Button variant={'outlined'} className={'text-white'}
+                                                      onClick={() => props.onSignUpClick(false)}>Sign Up</Button>
+
+                        </div>
                     </Form>
                 </Card.Body>
 
 
             </Card>
 
-            <div className={'w-100 text-center mt-2 text-white'}>
 
-                {/*Need an account ? <Link to={'/signup'}>Sign Up</Link>*/}
-                Need an account ? <Button variant={'outlined'} className={'text-white'}
-                                          onClick={() => props.onSignUpClick(false)}>Sign Up</Button>
-
-            </div>
 
 
         </div>

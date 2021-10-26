@@ -10,7 +10,7 @@ const FrontPageContent = () => {
                 <img src="https://img.icons8.com/color/48/000000/slack-new.png"/>
             </div>
             <div className={classes['iconStyler-2']}>
-                <img src="https://img.icons8.com/fluency/48/000000/discord-logo.png"/>
+                <img src="https://img.icons8.com/color/48/000000/twitter-circled--v2.png"/>
             </div>
             <div className={classes['iconStyler-3']}>
                 <img src="https://img.icons8.com/fluency/48/000000/microsoft-teams-2019.png"/>
