@@ -40,7 +40,9 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
         icon: <img src="https://img.icons8.com/color/48/000000/slack-new.png"/>,
         value: "slackCheckBoxFlag",
         label: "Slack",
-        labelPlacement: "slack"
+        labelPlacement: "slack",
+        hrefLink:"https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
+
 
     },
         {
@@ -48,7 +50,9 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
             icon: <img src="https://img.icons8.com/color/48/000000/twitter-circled--v2.png"/>,
             value: "twitterCheckBoxFlag",
             label: "Twitter",
-            labelPlacement: "twitter"
+            labelPlacement: "twitter",
+            hrefLink:"https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
+
 
         },
         {
@@ -56,7 +60,9 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
             icon: <img src="https://img.icons8.com/fluency/48/000000/microsoft-teams-2019.png"/>,
             value: "teamsCheckBoxFlag",
             label: "Teams",
-            labelPlacement: "teams"
+            labelPlacement: "teams",
+            hrefLink:"https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
+
         }]
 
 
@@ -84,48 +90,6 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
             }
 
         }
-
-
-        // console.log("Updated Flags = ")
-        // console.log(toBeReturnedFlags)
-
-
-        // var hola = document.getElementsByTagName('input')
-
-
-        // console.log("The length is ", cont.length)
-
-
-        // for (var i = 0; i < cont.length; i++) {
-        //     // Check if the element is a checkbox.
-        //     // if (cont[i].tagName === 'input' && cont[i].type === 'checkbox') {
-        //
-        //         console.log(cont[i])
-        //
-        //
-        //
-        //
-        //     console.log("Element here man = ")
-        //     console.log("Len = ", checkBoxers.length)
-        //
-        //     console.log(checkBoxers)
-        //
-        //
-        //     console.log("===============================")
-        //
-        //
-        //
-        //     if (cont[i].type === 'checkbox') {
-        //
-        //         console.log("Checking Bro")
-        //         // Finally, check if the checkbox is checked.
-        //         if (cont[i].checked) {
-        //             alert(cont[i].value + ' is checked!');
-        //         }
-        //     }
-        // }
-
-        // return toBeReturnedFlags;
         return onFlagSender(toBeReturnedFlags);
 
     }
@@ -156,7 +120,7 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
                             // < div className={'d-inline'}>
                             //     {icon}
                             // </div>
-                            < a href={"https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"}
+                            < a href={entry[1].hrefLink}
                                 className={'d-inline'}
                                 target="_blank">
                                 {icon}
