@@ -132,120 +132,163 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
 
 
     return (
-        <form>
+        <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+        >
+            <form>
 
-            {(!isSlackAuthDB || !isTwitterAuthDB || !isTeamsAuthDB) ?
-                <InputLabel className={'mt-3 pb-3'}>
-                    Please Authorize the following Platforms for your Broadcast
-                </InputLabel> : ""}
-
-
-            {
-
-                Object.entries(toBeIterated).map(entry => {
-                    // const [key, value] = entry;
-
-                    const {authFlag, icon} = entry[1]
-                    // console.log(authFlag)
-                    // console.log(icon)
-
-
-                    return !authFlag ? <Card key={'' + Math.random()} className={'d-inline p-3 mt-3 mr-3'}>
-                        {
-                            < div className={'d-inline'}>
-                                {icon}
-                            </div>
-                        }
-                    </Card> : ""
-                })
-
-            }
-
-
-            <FormControl component="fieldset" className={'d-block mt-3 pb-3'} id={'checkBoxComponent'}>
-
-                {(isSlackAuthDB || isTwitterAuthDB || isTeamsAuthDB) ?
-                    <FormLabel component="legend">Please Choose the platform you want the message to be
-                        broadcasted</FormLabel> :
-                    <FormLabel component="legend">Please Authorize any of the above platforms to broadcast your
-                        message</FormLabel>}
+                {(!isSlackAuthDB || !isTwitterAuthDB || !isTeamsAuthDB) ?
+                    <InputLabel className={'mt-3 pb-3'}>
+                        Please Authorize the following Platforms for your Broadcast
+                    </InputLabel> : ""}
 
 
                 {
 
                     Object.entries(toBeIterated).map(entry => {
-                        // const [key, value] = entry;
 
-                        const {authFlag, icon, value, label, labelPlacement} = entry[1]
-                        // console.log(authFlag)
-                        // console.log(icon)
-                        // console.log(`value = ${value}`)
+                        const {authFlag, icon} = entry[1]
 
 
-                        return authFlag ?
-                            <div key={'' + Math.random()} className={'d-inline'}>
-                                {
-                                    <FormGroup aria-label="position" row>
-                                        <FormControlLabel
-
-                                            value={value}
-                                            control={<Checkbox/>}
-                                            label={label}
-                                            labelPlacement={labelPlacement}
-                                            // onChange={onFlagSender(checkBoxChangeHandler)}
-                                            onChange={checkBoxChangeHandler}
-                                        />
-                                    </FormGroup>
-                                }
-                            </div> : ""
+                        return !authFlag ? <Card key={'' + Math.random()} className={'d-inline p-3 mt-3 mr-3'}>
+                            {
+                                < div className={'d-inline'}>
+                                    {icon}
+                                </div>
+                            }
+                        </Card> : ""
                     })
 
                 }
 
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <FormControl component="fieldset" className={'d-block mt-3 pb-3'} id={'checkBoxComponent'}>
 
-            </FormControl>
+                        {(isSlackAuthDB || isTwitterAuthDB || isTeamsAuthDB) ?
+                            <FormLabel component="legend">Please Choose the platform you want the message to be
+                                broadcasted</FormLabel> :
+                            <FormLabel component="legend">Please Authorize any of the above platforms to broadcast your
+                                message</FormLabel>}
+                        {
 
+                            Object.entries(toBeIterated).map(entry => {
 
-            {/*<FormControl component="fieldset" className={'d-block p-3 mt-3'}>*/}
-            {/*    <FormLabel component="legend">Please Choose the platform you want the message to be*/}
-            {/*        broadcasted</FormLabel>*/}
-            {/*    <FormGroup aria-label="position" row>*/}
-
-            {/*        {displaySlackCheckBox ?*/}
-            {/*            <FormControlLabel*/}
-            {/*                value="slack"*/}
-            {/*                control={<Checkbox/>}*/}
-            {/*                label="Slack"*/}
-            {/*                labelPlacement="slack"*/}
-            {/*            /> : ""}*/}
-            {/*        {displayTwitterCheckBox ? <FormControlLabel*/}
-            {/*            value="twitter"*/}
-            {/*            control={<Checkbox/>}*/}
-            {/*            label="Twitter"*/}
-            {/*            labelPlacement="twitter"*/}
-            {/*        /> : ""*/}
+                                const {authFlag, icon, value, label, labelPlacement} = entry[1]
 
 
-            {/*        }*/}
-            {/*        {displayTeamsCheckBox ?*/}
-            {/*            <FormControlLabel*/}
-            {/*                value="teams"*/}
-            {/*                control={<Checkbox/>}*/}
-            {/*                label="Teams"*/}
-            {/*                labelPlacement="teams"*/}
-
-            {/*                onChange={(e) => console.log(e.target)}*/}
-            {/*            /> : ""}*/}
+                                return authFlag ?
+                                    <Grid container
+                                          direction="column"
+                                          justifyContent="center"
+                                          alignItems="center"
+                                          className={'d-inline m-auto'}
 
 
-            {/*    </FormGroup>*/}
+                                          key={'' + Math.random()}
+                                        // className={'m-auto'}
+
+                                    >
+                                        {
+
+                                            <FormGroup aria-label="position" row className={'d-inline'}>
+                                                <FormControlLabel
+                                                    value={value}
+                                                    control={<Checkbox/>}
+                                                    label={label}
+                                                    labelPlacement={labelPlacement}
+                                                    // onChange={onFlagSender(checkBoxChangeHandler)}
+                                                    onChange={checkBoxChangeHandler}
+                                                />
+                                            </FormGroup>
+                                        }
+                                    </Grid> : ""
+                            })
 
 
-            {/*</FormControl>*/}
+
+                            }
 
 
-        </form>
-    );
-};
+                            </FormControl>
+                            </Grid>
 
-export default ChooseBotsPublish;
+
+                        {/*<FormControl component="fieldset" className={'d-block p-3 mt-3'}>*/}
+                        {/*    <FormLabel component="legend">Please Choose the platform you want the message to be*/
+                        }
+                        {/*        broadcasted</FormLabel>*/
+                        }
+                        {/*    <FormGroup aria-label="position" row>*/
+                        }
+
+                        {/*        {displaySlackCheckBox ?*/
+                        }
+                        {/*            <FormControlLabel*/
+                        }
+                        {/*                value="slack"*/
+                        }
+                        {/*                control={<Checkbox/>}*/
+                        }
+                        {/*                label="Slack"*/
+                        }
+                        {/*                labelPlacement="slack"*/
+                        }
+                        {/*            /> : ""}*/
+                        }
+                        {/*        {displayTwitterCheckBox ? <FormControlLabel*/
+                        }
+                        {/*            value="twitter"*/
+                        }
+                        {/*            control={<Checkbox/>}*/
+                        }
+                        {/*            label="Twitter"*/
+                        }
+                        {/*            labelPlacement="twitter"*/
+                        }
+                        {/*        /> : ""*/
+                        }
+
+
+                        {/*        }*/
+                        }
+                        {/*        {displayTeamsCheckBox ?*/
+                        }
+                        {/*            <FormControlLabel*/
+                        }
+                        {/*                value="teams"*/
+                        }
+                        {/*                control={<Checkbox/>}*/
+                        }
+                        {/*                label="Teams"*/
+                        }
+                        {/*                labelPlacement="teams"*/
+                        }
+
+                        {/*                onChange={(e) => console.log(e.target)}*/
+                        }
+                        {/*            /> : ""}*/
+                        }
+
+
+                        {/*    </FormGroup>*/
+                        }
+
+
+                        {/*</FormControl>*/
+                        }
+
+
+                            </form>
+                            </Grid>
+                            );
+                        };
+
+                        export default ChooseBotsPublish;
