@@ -152,9 +152,15 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
 
                     return !authFlag ? <Card key={'' + Math.random()} className={'d-inline p-3 mt-3 mr-3'}>
                         {
-                            < div className={'d-inline'}>
+                            // <a href='/posts/'{post.id}>{post.title}</a>
+                            // < div className={'d-inline'}>
+                            //     {icon}
+                            // </div>
+                            < a href={"https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"}
+                                className={'d-inline'}
+                                target="_blank">
                                 {icon}
-                            </div>
+                            </a>
                         }
                     </Card> : ""
                 })

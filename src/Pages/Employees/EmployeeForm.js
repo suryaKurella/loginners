@@ -76,14 +76,14 @@ const EmployeeForm = () => {
             scheduler: {
                 display: 'block'
             },
-            alignItemsAndJustifyContent: {
-                // width: 500,
-                // height: 80,
-                // display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'pink',
-            },
+            // alignItemsAndJustifyContent: {
+            //     // width: 500,
+            //     // height: 80,
+            //     // display: 'flex',
+            //     alignItems: 'center',
+            //     justifyContent: 'center',
+            //     // backgroundColor: 'pink',
+            // },
 
         }
     ))
@@ -129,9 +129,18 @@ const EmployeeForm = () => {
 
 
     return (
-            <Grid container>
+            <Grid container
+                  direction={'row'}
+                  alignContent={'center'}
+                  justifyContent={'center'}
+            >
 
-                <Grid item md={6} xs={12} sm={12}>
+                <Grid
+                    container
+                    direction={'row'}
+                    alignContent={'center'}
+                    justifyContent={'center'}
+                    item md={6} xs={6} sm={6}>
                     {/*<Grid item>*/}
 
 
@@ -140,8 +149,20 @@ const EmployeeForm = () => {
                     </div>
                 </Grid>
 
-                <Grid item md={6} xs={12} sm={12}>
+                <Grid
+                    className={``}
+                    container
+                    direction={'row'}
+                    alignContent={'center'}
+                    justifyContent={'center'}
+                    item md={6} xs={6} sm={6}>
+
                     {/*<Grid item>*/}
+                    <Paper
+                        className={`p-4`}
+                        variant={'elevation'}
+                        elevation={17}>
+
                     <form className={`${stylers.alignItemsAndJustifyContent}`} noValidate autoComplete={'off'}
                           onSubmit={handleSubmit((data) => {
                               console.log(data)
@@ -222,14 +243,20 @@ const EmployeeForm = () => {
                             hidden
                         />
 
-                        <Grid container>
 
-                            <Grid>
+
+                            <Grid
+                                // container
+                                direction={'row'}
+                                alignContent={'center'}
+                                justifyContent={'center'}
+                                >
                                 <Paper>
                                     <InputLabel
-                                        className={filers.fileUploadBtn}
+                                        className={`${filers.fileUploadBtn} text-center`}
                                         for="my-file"
                                         variant={"contained"}
+
                                         // style={{backgroundColor: '#0d0f53', color: '#FFFFFF'}}
                                         // color={"secondary"}
 
@@ -243,9 +270,6 @@ const EmployeeForm = () => {
                             </Grid>
 
 
-                        </Grid>
-
-
                         {/*<InputLabel*/}
                         {/*    className={filers.fileUploadBtn}*/}
 
@@ -254,7 +278,7 @@ const EmployeeForm = () => {
                         {/*>Please CLick ME</InputLabel>*/}
 
 
-                        <FormControl component="fieldset">
+                        <FormControl className={`mt-2 pb-3`}  component="fieldset">
                             <FormLabel component="legend">Schedule Your Broadcast</FormLabel>
                             <Controller
                                 rules={{required: true}}
@@ -401,6 +425,7 @@ const EmployeeForm = () => {
                         </Button>
 
                     </form>
+                    </Paper>
                 </Grid>
 
 
