@@ -41,9 +41,9 @@ const EmployeeForm = () => {
     const [isScheduleLater, setIsScheduleLater] = useState(false)
 
 
-    const [isSlackAuthDB, setIsSlackAuthDB] = useState(true)
+    const [isSlackAuthDB, setIsSlackAuthDB] = useState(false)
     const [isTwitterAuthDB, setIsTwitterAuthDB] = useState(true)
-    const [isTeamsAuthDB, setIsTeamsAuthDB] = useState(false)
+    const [isTeamsAuthDB, setIsTeamsAuthDB] = useState(true)
 
 
     // These flags needs to be updated to DB once these get updated by
@@ -76,17 +76,19 @@ const EmployeeForm = () => {
             scheduler: {
                 display: 'block'
             },
-            alignItemsAndJustifyContent: {
-                // width: 500,
-                // height: 80,
-                // display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                // backgroundColor: 'pink',
-            },
+            // alignItemsAndJustifyContent: {
+            //     // width: 500,
+            //     // height: 80,
+            //     // display: 'flex',
+            //     alignItems: 'center',
+            //     justifyContent: 'center',
+            //     // backgroundColor: 'pink',
+            // },
 
         }
     ))
+
+
 
 
     const BotsCheckBoxHandler = (toBeReturnedFlags) => {
@@ -127,64 +129,83 @@ const EmployeeForm = () => {
 
 
     return (
-        <Grid container>
+            <Grid container
+                  direction={'row'}
+                  alignContent={'center'}
+                  justifyContent={'center'}
+            >
 
-            <Grid item md={6} xs={12} sm={12}>
-                {/*<Grid item>*/}
-
-
-                {/*<div className={`${classes["announce-image"]}`}>xs=8</div>*/}
-                <div className={`${classes.announcePageImage}`}>
-                </div>
-            </Grid>
-
-            <Grid item md={6} xs={12} sm={12}>
-                {/*<Grid item>*/}
-                <form className={`${stylers.alignItemsAndJustifyContent}`} noValidate autoComplete={'off'}
-                      onSubmit={handleSubmit((data) => {
-                          console.log(data)
-                          console.log("MESSAGE")
-                          console.log(data["message"])
-                          setMessageError(false)
-                          let uploadFileName = ''
+                <Grid
+                    container
+                    direction={'row'}
+                    alignContent={'center'}
+                    justifyContent={'center'}
+                    item md={6} xs={6} sm={6}>
+                    {/*<Grid item>*/}
 
 
-                          const message_roll = data["message"]
+                    {/*<div className={`${classes["announce-image"]}`}>xs=8</div>*/}
+                    <div className={`${classes.announcePageImage}`}>
+                    </div>
+                </Grid>
 
-                          try {
-                              console.log("Message Roll = ", message_roll)
-                              uploadFileName = data["uploadableFiles"][0]["name"]
-                              console.log("Uploaded File Nmae = ", uploadFileName)
-                          } catch (err) {
-                              console.log("No File Uploaded")
-                              uploadFileName = ''
-                          }
+                <Grid
+                    className={``}
+                    container
+                    direction={'row'}
+                    alignContent={'center'}
+                    justifyContent={'center'}
+                    item md={6} xs={6} sm={6}>
 
-                          if (!uploadFileName && !message_roll) {
-                              setMessageError(true)
+                    {/*<Grid item>*/}
+                    <Paper
+                        className={`p-4`}
+                        variant={'elevation'}
+                        elevation={17}>
 
-                          }
+                    <form className={`${stylers.alignItemsAndJustifyContent}`} noValidate autoComplete={'off'}
+                          onSubmit={handleSubmit((data) => {
+                              console.log(data)
+                              console.log("MESSAGE")
+                              console.log(data["message"])
+                              setMessageError(false)
+                              let uploadFileName = ''
 
 
-                          console.log("In Handler Submitter slackCheckBoxFlag =  ", slackCheckBoxFlag)
-                          console.log("In Handler Submitter twitterCheckBoxFlag =  ", twitterCheckBoxFlag)
-                          console.log("In Handler Submitter teamsCheckBoxFlag =  ", teamsCheckBoxFlag)
+                              const message_roll = data["message"]
 
-                      })}>
+                              try {
+                                  console.log("Message Roll = ", message_roll)
+                                  uploadFileName = data["uploadableFiles"][0]["name"]
+                                  console.log("Uploaded File Nmae = ", uploadFileName)
+                              } catch (err) {
+                                  console.log("No File Uploaded")
+                                  uploadFileName = ''
+                              }
 
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
+                              if (!uploadFileName && !message_roll) {
+                                  setMessageError(true)
+
+                              }
+
+
+                              console.log("In Handler Submitter slackCheckBoxFlag =  ", slackCheckBoxFlag)
+                              console.log("In Handler Submitter twitterCheckBoxFlag =  ", twitterCheckBoxFlag)
+                              console.log("In Handler Submitter teamsCheckBoxFlag =  ", teamsCheckBoxFlag)
+
+
+                              // console.log("UPLOAD NAME ")
+                              // console.log(data["uploadableFiles"][0]["name"])
+
+                          })}>
+
                         <TextField
                             onChange={(e) => setName(e.target.value)}
                             className={`${stylers.field}`}
                             label={'user Name'}
                             variant={'outlined'}
                             color={'primary'}
-
+                            fullWidth
                             required
                             // value={name}
                             // error={true}
@@ -195,19 +216,12 @@ const EmployeeForm = () => {
                             error={Boolean(errors.username)}
                             helperText={errors.username?.message}
                         />
-                    </Grid>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
                         <TextField
                             onChange={(e) => setMessage(e.target.value)}
                             className={`${stylers.field}`}
                             label={'Message'}
                             variant={'outlined'}
-                            // fullWidth
+                            fullWidth
                             required
                             multiline
                             rows={4}
@@ -216,65 +230,56 @@ const EmployeeForm = () => {
                             error={messageError}
                             helperText={messageError ? "Either Message or a multi media file is Required" : ""}
                         />
-                    </Grid>
 
 
-                    <TextField
-                        // className={`${stylers.field}`}
-                        id={"my-file"}
-                        type="file"
-                        name="picture"
-                        {...register('uploadableFiles',)}
-                        // error={messageError}
-                        // helperText={messageError?"Either Message or a multi media file is Required":""}
-                        hidden
-                    />
-
-                    <Grid container>
+                        <TextField
+                            // className={`${stylers.field}`}
+                            id={"my-file"}
+                            type="file"
+                            name="picture"
+                            {...register('uploadableFiles',)}
+                            // error={messageError}
+                            // helperText={messageError?"Either Message or a multi media file is Required":""}
+                            hidden
+                        />
 
 
-                        <Grid
-                            container
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center">
-                            <Paper>
-                                <InputLabel
-                                    className={`${filers.fileUploadBtn}`}
-                                    for="my-file"
-                                    variant={"contained"}
-                                    // style={{backgroundColor: '#0d0f53', color: '#FFFFFF'}}
-                                    // color={"secondary"}
 
-
+                            <Grid
+                                // container
+                                direction={'row'}
+                                alignContent={'center'}
+                                justifyContent={'center'}
                                 >
-                                    Upload Media
-                                </InputLabel>
+                                <Paper>
+                                    <InputLabel
+                                        className={`${filers.fileUploadBtn} text-center`}
+                                        for="my-file"
+                                        variant={"contained"}
 
-                            </Paper>
+                                        // style={{backgroundColor: '#0d0f53', color: '#FFFFFF'}}
+                                        // color={"secondary"}
 
-                        </Grid>
+
+                                    >
+                                        Upload Media
+                                    </InputLabel>
+
+                                </Paper>
+
+                            </Grid>
 
 
-                    </Grid>
+                        {/*<InputLabel*/}
+                        {/*    className={filers.fileUploadBtn}*/}
 
-                    {/*<InputLabel*/}
-                    {/*    className={filers.fileUploadBtn}*/}
+                        {/*    variant={"standard"}*/}
 
-                    {/*    variant={"standard"}*/}
+                        {/*>Please CLick ME</InputLabel>*/}
 
-                    {/*>Please CLick ME</InputLabel>*/}
 
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <FormControl component="fieldset">
-
-                            <FormLabel className={`mt-3 pt-2`} component="legend">Schedule Your Broadcast</FormLabel>
-
+                        <FormControl className={`mt-2 pb-3`}  component="fieldset">
+                            <FormLabel component="legend">Schedule Your Broadcast</FormLabel>
                             <Controller
                                 rules={{required: true}}
                                 control={control}
@@ -312,73 +317,119 @@ const EmployeeForm = () => {
                                     );
                                 }}
                             />
+                            {/*<RadioGroup*/}
+                            {/*    aria-label="gender"*/}
+                            {/*    defaultValue="BroadCast right now"*/}
+                            {/*    name="radio-buttons-group"*/}
+                            {/*>*/}
+                            {/*    <FormControlLabel*/}
+                            {/*        value="BroadCast right now"*/}
+                            {/*        control={<Radio inputRef={register}/>}*/}
+                            {/*        label="BroadCast right now"/>*/}
+                            {/*    <FormControlLabel*/}
+                            {/*        value="Schedule for later"*/}
+                            {/*        control={<Radio inputRef={register}/>}*/}
+                            {/*        label="Schedule for later"/>*/}
+                            {/*</RadioGroup>*/}
                         </FormControl>
-                    </Grid>
 
-                    {isScheduleLater ?
-                        <Grid
-                            container
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center">
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <Controller
-                                    render={({
-                                                 field: {onChange, onBlur, value, name, ref},
-                                             }) => (
-                                        <KeyboardDateTimePicker
-
-                                            minDate={new Date()}
-                                            margin={"normal"}
-                                            label={"Select Date & Time"}
-                                            value={value}
-                                            onChange={onChange}
-                                        />
-                                    )}
-                                    name={'date_schedule'}
-                                    defaultValue={null}
-                                    control={control}
-                                />
-
-                            </MuiPickersUtilsProvider>
-                        </Grid>
-                        : ""}
+                        {isScheduleLater ?
+                            <div>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
 
 
+                                    <Controller
 
-                    <ChooseBotsPublish
-                        onFlagSender={BotsCheckBoxHandler}
-                        authFlags={{isSlackAuthDB, isTwitterAuthDB, isTeamsAuthDB}}
+                                        render={({
+                                                     field: {onChange, onBlur, value, name, ref},
+                                                 }) => (
+                                            <KeyboardDateTimePicker
+                                                minDate={new Date()}
+                                                margin={"normal"}
+                                                label={"Select Date & Time"}
+                                                value={value}
+                                                onChange={onChange}
+                                            />
+                                        )}
+                                        name={'date_schedule'}
+                                        defaultValue={null}
+                                        control={control}
+                                    />
+
+                                </MuiPickersUtilsProvider>
+                            </div>
+                            : ""}
 
 
-                    />
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center">
+                        {/*<FormGroup>*/}
+                        {/*    <FormControlLabel control={<Checkbox defaultChecked/>} label="Label"/>*/}
+                        {/*    <FormControlLabel disabled control={<Checkbox/>} label="Disabled"/>*/}
+                        {/*</FormGroup>*/}
 
 
+                        {/*<DatePickerFunc/>*/}
 
 
-                    <Button
-                        className={classes.submitBtn}
-                        variant={"contained"}
-                        color={'success'}
-                        style={{backgroundColor: '#0d0f53', color: '#FFFFFF'}}
-                        type={'submit'}
+                        <ChooseBotsPublish
+                            onFlagSender={BotsCheckBoxHandler}
+                            authFlags={{isSlackAuthDB, isTwitterAuthDB, isTeamsAuthDB}}
 
-                    >
-                        Submit
-                    </Button>
 
-                    </Grid>
+                        />
 
-                </form>
+
+                        {/*<FormControl component="fieldset">*/}
+                        {/*    <FormLabel component="legend">Please Choose the platform you want the message to be*/}
+                        {/*        broadcasted</FormLabel>*/}
+                        {/*    <FormGroup aria-label="position" row>*/}
+
+
+                        {/*        <FormControlLabel*/}
+                        {/*            value={{valueAsBoolean: true}[0]}*/}
+                        {/*            control={<Checkbox/>}*/}
+                        {/*            label="Slack"*/}
+                        {/*            labelPlacement="slack"*/}
+                        {/*            {...register("SLACK_FLAG")}*/}
+                        {/*        />*/}
+                        {/*        <FormControlLabel*/}
+                        {/*            value={{valueAsBoolean: true}[0]}*/}
+                        {/*            control={<Checkbox/>}*/}
+                        {/*            label="Teams"*/}
+                        {/*            labelPlacement="teams"*/}
+                        {/*            {...register("TEAMS_FLAG")}*/}
+                        {/*        />*/}
+                        {/*        <FormControlLabel*/}
+                        {/*            value={{valueAsBoolean: true}[0]}*/}
+                        {/*            control={<Checkbox/>}*/}
+                        {/*            label="Twitter"*/}
+                        {/*            labelPlacement="twitter"*/}
+                        {/*            {...register("TWITTER_FLAG")}*/}
+                        {/*        />*/}
+
+                        {/*    </FormGroup>*/}
+
+
+                        {/*</FormControl>*/}
+
+
+                        <Button
+                            className={classes.submitBtn}
+
+                            variant={"contained"}
+                            color={'success'}
+                            style={{backgroundColor: '#0d0f53', color: '#FFFFFF'}}
+                            type={'submit'}
+
+                        >
+                            Submit
+                        </Button>
+
+                    </form>
+                    </Paper>
+                </Grid>
+
+
             </Grid>
-
-
-        </Grid>
 
     );
 };
