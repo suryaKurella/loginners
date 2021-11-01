@@ -5,7 +5,6 @@ import classes from '../UI/StyleSheets/FrontPageContent.module.css'
 const FrontPageContent = () => {
     return (
         <div>
-
             <div className={classes['iconStyler-1']}>
                 <img src="https://img.icons8.com/color/48/000000/slack-new.png"/>
             </div>

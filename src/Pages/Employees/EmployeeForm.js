@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import classes from '../StyleSheets/AnnouncementPage.module.css'
-
-
+import greenImg from 'D://Surya//Software LEarning//loginners//src//UI//images//green.jpeg';
+import PersonIcon from '@mui/icons-material/Person';
+import MessageIcon from '@mui/icons-material/Message';
 import {
     Grid,
     Paper,
@@ -16,8 +17,10 @@ import {
     FormGroup,
     FormControlLabel,
     RadioGroup,
-    Radio, Checkbox,
+    Radio, Checkbox, Modal,
+
 } from '@material-ui/core'
+
 import {makeStyles} from '@material-ui/styles';
 import {useForm, Controller} from 'react-hook-form'
 import ChooseBotsPublish from './ChooseBotsPublish'
@@ -25,6 +28,11 @@ import ChooseBotsPublish from './ChooseBotsPublish'
 import filers from '../StyleSheets/FormStyleSheet.module.css'
 import DateFnsUtils from "@date-io/date-fns";
 import {KeyboardDateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
+import Box from "@mui/material/Box";
+import ModalAnnouncePage from "./ModalAnnouncePage";
 
 
 const EmployeeForm = () => {
@@ -43,7 +51,7 @@ const EmployeeForm = () => {
 
     const [isSlackAuthDB, setIsSlackAuthDB] = useState(false)
     const [isTwitterAuthDB, setIsTwitterAuthDB] = useState(true)
-    const [isTeamsAuthDB, setIsTeamsAuthDB] = useState(true)
+    const [isTeamsAuthDB, setIsTeamsAuthDB] = useState(false)
 
 
     // These flags needs to be updated to DB once these get updated by
@@ -54,8 +62,8 @@ const EmployeeForm = () => {
     let [slackCheckBoxFlag, twitterCheckBoxFlag, teamsCheckBoxFlag] = [false, false, false]
 
 
-    // console.log(watch())setIsTeamsChecked
-    // console.log(errors)
+
+
 
     const useStyle = makeStyles(theme => (
         {
@@ -64,9 +72,9 @@ const EmployeeForm = () => {
                 marginBottom: 20,
                 display: 'block'
             },
-            input: {
-                // color: "white"
-            },
+            // input: {
+            //     color: "white"
+            // },
             outlineColor: {
                 border: ' 2px solid green'
             },
@@ -76,14 +84,17 @@ const EmployeeForm = () => {
             scheduler: {
                 display: 'block'
             },
-            // alignItemsAndJustifyContent: {
-            //     // width: 500,
-            //     // height: 80,
-            //     // display: 'flex',
-            //     alignItems: 'center',
-            //     justifyContent: 'center',
-            //     // backgroundColor: 'pink',
-            // },
+            paperContainer:{
+                // border: "1px solid",
+                // padding: "10px",
+                // boxShadow: "5px 10px black"
+                // backgroundImage: `url(https://i.pinimg.com/originals/0c/f5/d3/0cf5d3ed289c82a21407845377159ac2.gif)`,
+                // backgroundRepeat: "no-repeat",
+                // backgroundPosition: "center center",
+                // backgroundSize: "cover",
+                // backgroundAttachment: "fixed",
+                // backgroundImage: `url(${greenImg})`
+            }
 
         }
     ))
@@ -98,34 +109,11 @@ const EmployeeForm = () => {
         teamsCheckBoxFlag = toBeReturnedFlags["teamsCheckBoxFlag"]
 
 
-        // {slackCheckBoxFlag, twitterCheckBoxFlag, teamsCheckBoxFlag} = toBeReturnedFlags
-
-        // console.log("====================================")
-        //
-        //
-        // console.log(`slackCheckBoxFlag = ${slackCheckBoxFlag}`)
-        // console.log(`twitterCheckBoxFlag = ${twitterCheckBoxFlag}`)
-        // console.log(`teamsCheckBoxFlag = ${teamsCheckBoxFlag}`)
-        //
-        //
-        // // setIsSlackChecked(slackCheckBoxFlag)
-        // // setIsTwitterChecked(twitterCheckBoxFlag)
-        // // setIsTeamsChecked(teamsCheckBoxFlag)
-        //
-        //
-        // console.log("toBeReturnedFlags = ")
-        // console.log(toBeReturnedFlags)
-        // console.log(toBeReturnedFlags)
-
-        // console.log("Main Form Flags Updated  = ")
-        // console.log(`toBeReturnedFlags length = ${toBeReturnedFlags.length}`)
-
-
-        // console.log("====================================")
-
     }
 
     const stylers = useStyle()
+
+
 
 
     return (
@@ -145,8 +133,8 @@ const EmployeeForm = () => {
 
 
                     {/*<div className={`${classes["announce-image"]}`}>xs=8</div>*/}
-                    <div className={`${classes.announcePageImage}`}>
-                    </div>
+                    <Card className={`${classes.announcePageImage}`}>
+                    </Card>
                 </Grid>
 
                 <Grid
@@ -159,9 +147,10 @@ const EmployeeForm = () => {
 
                     {/*<Grid item>*/}
                     <Paper
-                        className={`p-4`}
+                        className={`p-4 ${stylers.paperContainer} ${classes['card-announce']}`}
                         variant={'elevation'}
-                        elevation={17}>
+                        elevation={24}
+                          >
 
                     <form className={`${stylers.alignItemsAndJustifyContent}`} noValidate autoComplete={'off'}
                           onSubmit={handleSubmit((data) => {
@@ -194,29 +183,39 @@ const EmployeeForm = () => {
                               console.log("In Handler Submitter teamsCheckBoxFlag =  ", teamsCheckBoxFlag)
 
 
-                              // console.log("UPLOAD NAME ")
-                              // console.log(data["uploadableFiles"][0]["name"])
 
                           })}>
 
+
+
                         <TextField
                             onChange={(e) => setName(e.target.value)}
-                            className={`${stylers.field}`}
-                            label={'user Name'}
+                            className={` ${stylers.field}`}
+                            label={'User Name'}
                             variant={'outlined'}
                             color={'primary'}
                             fullWidth
                             required
+
                             // value={name}
                             // error={true}
                             InputProps={{
-                                className: stylers.input
+                                className: stylers.input,
+                                startAdornment: (
+                                    <InputAdornment>
+                                        <IconButton>
+                                            <PersonIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
                             }}
                             {...register("username", {required: "First Name is Required"})}
                             error={Boolean(errors.username)}
                             helperText={errors.username?.message}
                         />
                         <TextField
+
+
                             onChange={(e) => setMessage(e.target.value)}
                             className={`${stylers.field}`}
                             label={'Message'}
@@ -225,6 +224,16 @@ const EmployeeForm = () => {
                             required
                             multiline
                             rows={4}
+                            InputProps={{
+                                className: stylers.input,
+                                startAdornment: (
+                                    <InputAdornment>
+                                        <IconButton>
+                                            <MessageIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                             // value={message}
                             {...register("message", "Either Message or a multi media file is Required")}
                             error={messageError}
@@ -423,6 +432,14 @@ const EmployeeForm = () => {
                         >
                             Submit
                         </Button>
+
+
+                        <ModalAnnouncePage/>
+
+
+
+
+
 
                     </form>
                     </Paper>

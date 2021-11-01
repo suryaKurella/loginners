@@ -37,5 +37,9 @@
     width: 100%;
     left:60%;
     /*text-align: center;*/
-
+}
+.logoDesign{
+    color: #2b2b2b;
+    font-size:3rem;
+    font-family: "Monotype Corsiva";
 }

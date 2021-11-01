@@ -1,6 +1,23 @@
 .announcePageImage{
-    background-image: url('../../UI/images/announcePage.jpg');
-    height: 100vh;
+
+    left:3rem;
+
+    position: relative;
+    background-image: url('../../UI/images/announcePage.png');
+    height: 80vh;
     width: 100%;
-    background-size: cover
+    background-size: cover;
+    border-radius: 1rem !important;
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.25) !important;
+    padding-bottom: 20px;
+    padding-top: 200px;
+    margin:20px;
+}
+.card-announce{
+
+    border-radius: 1rem !important;
+    box-shadow: 40px 35px 35px 35px rgba(0, 0, 0, 0.35) !important;
+    padding-bottom: 20px;
+    padding-top: 200px;
+    margin:20px;
 }

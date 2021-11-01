@@ -5,6 +5,8 @@ import {Link, useHistory} from 'react-router-dom'
 import classes from "../UI/StyleSheets/Card.module.css";
 import '../UI/StyleSheets/Signup.css'
 import buttoners from '../UI/StyleSheets/Buttons.module.css'
+import Employees from "../Pages/Employees/Employees";
+
 const Login = (props) => {
 
 
@@ -26,7 +28,7 @@ const Login = (props) => {
             setError('')
             setLoading(true)
             await login(emailRef.current.value, passwordRef.current.value)
-            history.push('/')
+            history.push('/announceform')
         } catch (e) {
             setError("Failed to login an Account")
         }
@@ -57,7 +59,9 @@ const Login = (props) => {
 
                         <Form.Group className={`signup-btn`}>
 
-                            <Button disabled={loading} className={`${buttoners.submitBtn} submit-btn w-100 bg-success shadow-none`} type={'submit'}>Log
+                            <Button disabled={loading}
+                                    className={`${buttoners.submitBtn} submit-btn w-100 bg-success shadow-none`}
+                                    type={'submit'}>Log
                                 in</Button>
                         </Form.Group>
 
@@ -66,17 +70,10 @@ const Login = (props) => {
                             {/*Need an account ? <Link to={'/signup'}>Sign Up</Link>*/}
                             Need an account ? <Button variant={'outlined'} className={'text-white'}
                                                       onClick={() => props.onSignUpClick(false)}>Sign Up</Button>
-
                         </div>
                     </Form>
                 </Card.Body>
-
-
             </Card>
-
-
-
-
         </div>
     );
 };

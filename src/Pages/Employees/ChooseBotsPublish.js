@@ -155,7 +155,7 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
                         return authFlag ?
                             <div key={'' + Math.random()} className={'d-inline'}>
                                 {
-                                    <FormGroup aria-label="position" row>
+                                    <FormGroup aria-label="position" row className={'d-inline'}>
                                         <FormControlLabel
 
                                             value={value}

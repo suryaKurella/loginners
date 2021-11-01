@@ -8,10 +8,10 @@ import materials from '../UI/StyleSheets/FormMaterial.module.css'
 
 import cardClasses from '../UI/StyleSheets/generalCard.module.css'
 import buttoners from '../UI/StyleSheets/Buttons.module.css'
-
+import boomer from '../UI/images/wrote.png'
 import Login from './Login'
 import FrontPageContent from './FrontPageContent'
-import {TextField} from "@material-ui/core";
+
 
 const Signup = () => {
     const emailRef = useRef()
@@ -20,6 +20,7 @@ const Signup = () => {
     const {signup} = useAuth()
 
     const [error, setError] = useState('')
+    const [signInSuccess, setSignInSuccess] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
@@ -33,15 +34,15 @@ const Signup = () => {
         console.log(`passwordConfirmRef.current.value = ${passwordConfirmRef.current.value}`)
 
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-
             return setError('Passwords Do not match')
-
         }
 
         try {
             setError('')
             setLoading(true)
             await signup(emailRef.current.value, passwordRef.current.value)
+            setSignInSuccess("Registration Successful! Please move to Sign in Page")
+
             history.push('/')
         } catch (e) {
             // setError("Failed to create an Account")
@@ -85,6 +86,7 @@ const Signup = () => {
                 <Col className={`gap-padding`}>
 
                     <Card className={`${cardClasses.card} ml-0`}>
+                        {/*<img className="image2" src={boomer}/>*/}
                         <div className={'announcement text-white'}>
                             <FrontPageContent/>
                         </div>
@@ -110,6 +112,7 @@ const Signup = () => {
 
                                 </h2>
                                 {error && <Alert variant={'danger'}>{error}</Alert>}
+                                {signInSuccess && <Alert variant={'success'}>{signInSuccess}</Alert>}
                                 <Form onSubmit={handleSubmit}>
                                     <Form.Group id={'email'} className={'ml-5 mr-5'}>
                                         <Form.Label className={'text-white'}>Email</Form.Label>
