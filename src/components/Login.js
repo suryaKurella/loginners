@@ -1,46 +1,61 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useReducer, useMemo, useContext} from 'react';
 import {Form, Button, Card, Alert} from 'react-bootstrap'
 import {useAuth} from '../contexts/AuthContext'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, Route, Switch, useHistory} from 'react-router-dom'
 import classes from "../UI/StyleSheets/Card.module.css";
 import '../UI/StyleSheets/Signup.css'
 import buttoners from '../UI/StyleSheets/Buttons.module.css'
 import Employees from "../Pages/Employees/Employees";
+import Loginreducer from "../reducers/Loginreducer";
+
 
 const Login = (props) => {
 
+    const MyContext = React.createContext();
 
-    const emailRef = useRef()
-    const passwordRef = useRef()
+
+    const initialState = {
+
+        email: '',
+        password: '',
+        error: '',
+        loading: false,
+        isLoggedIn: false
+    }
+
+
+    const [state, dispatch] = useReducer(Loginreducer, initialState)
+    let {email, error, loading, isLoggedIn, password} = state
+
     const {login} = useAuth()
-
-    const [error, setError] = useState('')
-    const [loading, setLoading] = useState(false)
     const history = useHistory()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        console.log(`emailRef.current.value = ${emailRef.current.value}`)
-        console.log(`passwordRef.current.value = ${passwordRef.current.value}`)
+        console.log(`emailRef.current.value = ${email}`)
+        console.log(`passwordRef.current.value = ${password}`)
 
         try {
-            setError('')
-            setLoading(true)
-            await login(emailRef.current.value, passwordRef.current.value)
-            history.push('/announceform')
+            dispatch({type: 'LOGIN_SUCCESS'})
+            await login(email, password)
+            dispatch({type: `LOGIN_SUCCESS_AFTER`})
         } catch (e) {
-            setError("Failed to login an Account")
+            dispatch({type: 'LOGIN_FAILURE'})
         }
 
-        setLoading(false)
-
-
+        dispatch({type: "SET_LOADING_FALSE"})
     }
-
-
     return (
+
+
+        // <MyContext.Provider value={contextValue}>
         <div>
+
+            {console.log(`isLoggedIn = ${isLoggedIn}`)}
+
+            {/*<MyContext.Provider value={contextValue}>*/}
+            {isLoggedIn ? history.push('/announceform') : ""}
+            {/*</MyContext.Provider>*/}
 
 
             <Card className={classes.cardFrontPage}>
@@ -50,11 +65,32 @@ const Login = (props) => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group id={'email'} className={'ml-5 mr-5'}>
                             <Form.Label className={'text-white'}>Email</Form.Label>
-                            <Form.Control placeholder={'Email Address'} type={'email'} ref={emailRef} required/>
+                            <Form.Control
+                                placeholder={'Email Address'}
+                                type={'email'}
+                                onChange={e => dispatch({
+                                    type: 'FIELD',
+                                    field: 'email',
+                                    value: e.currentTarget.value
+                                })}
+                                value={email}
+                                // ref={emailRef}
+                                required/>
                         </Form.Group>
                         <Form.Group id={'password'} className={'ml-5 mr-5'}>
                             <Form.Label className={'text-white'}>Password</Form.Label>
-                            <Form.Control placeholder={'Password'} type={'password'} ref={passwordRef} required/>
+                            {/*<Form.Control placeholder={'Password'} type={'password'} ref={passwordRef} required/>*/}
+                            <Form.Control
+                                placeholder={'Password'}
+                                type={'password'}
+                                onChange={e => dispatch({
+                                    type: 'FIELD',
+                                    field: 'password',
+                                    value: e.currentTarget.value
+                                })}
+                                value={password}
+                                required
+                            />
                         </Form.Group>
 
                         <Form.Group className={`signup-btn`}>
@@ -69,13 +105,20 @@ const Login = (props) => {
 
                             {/*Need an account ? <Link to={'/signup'}>Sign Up</Link>*/}
                             Need an account ? <Button variant={'outlined'} className={'text-white'}
-                                                      onClick={() => props.onSignUpClick(false)}>Sign Up</Button>
+                                                      onClick={() => props.onSignUpClick(false)}>Sign
+                            Up</Button>
                         </div>
                     </Form>
                 </Card.Body>
             </Card>
+
+
+            {/*</MyContext.Provider>*/}
         </div>
-    );
+
+    )
+        ;
 };
+
 
 export default Login;

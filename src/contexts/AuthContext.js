@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {auth} from '../firebase'
 import 'firebase/compat/firestore'
 import 'firebase/compat/storage'
@@ -22,12 +22,11 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
+        return auth.onAuthStateChanged(user => {
 
             setCurrentUser(user)
             setLoading(false)
         })
-        return unsubscribe
     }, [])
 
 

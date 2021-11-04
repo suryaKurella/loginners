@@ -25,7 +25,6 @@ import {makeStyles} from '@material-ui/styles';
 import {useForm, Controller} from 'react-hook-form'
 import ChooseBotsPublish from './ChooseBotsPublish'
 
-
 import filers from '../StyleSheets/FormStyleSheet.module.css'
 import DateFnsUtils from "@date-io/date-fns";
 import {KeyboardDateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
@@ -37,49 +36,39 @@ import ModalAnnouncePage from "./ModalAnnouncePage";
 import Loginreducer from "../../reducers/Loginreducer";
 
 import {useAuth} from '../../contexts/AuthContext'
-import AnnouncePageReducer from "../../reducers/AnnouncePageReducer";
-import DatePickerFunc from "../Employees/DatepickerFunc";
-import {StoreContext} from '../../contexts/MobxStoreContext';
-import GridUtilFormCommon from "../utils/GridUtilFormCommon";
-import {yupResolver} from "@hookform/resolvers/yup";
 
-import * as yup from 'yup'
-import {Input} from "../utils/Input";
-import IconAdornmentField from "../utils/IconAdornmentField";
-import {PrimaryButton} from "../utils/PrimaryButton";
-import {useObserver} from "mobx-react";
+// import {MyContext} from '../../components/Login'
 
-
-const schema = yup.object().shape({
-    userName:
-        yup.string().matches(/^([^0-9]*)$/, "User Name should not contain numbers")
-            .required("Please enter your User Name"),
-    message:
-        yup.string().required("Please enter your message")
-})
 
 const EmployeeForm = () => {
-    const store = React.useContext(StoreContext);
 
-    console.log(`bugs = ${store.bugs} and message = ${store.message}`)
-
-    const {register, handleSubmit, formState: {errors}, control} = useForm({
-        mode: "onBlur",
-        resolver: yupResolver(schema)
-    })
-
-    // const [state, dispatch] = useReducer(AnnouncePageReducer, initialState)
-    // let {email, error, loading, isLoggedIn, password, isScheduleLater} = state
-
-    // const [name, setName] = useState('')
-    // const [message, setMessage] = useState('')
-
-    // const [nameError, setNameError] = useState(false)
-    const [isMessageError, setIsMessageError] = useState(false)
-    const [isFileUpload, setIsFileUpload] = useState(false)
+    const {currentUser} = useAuth()
 
 
-    // const [isScheduleLater, setIsScheduleLater] = useState(false)
+    console.log(`currentUser = `)
+
+    const initialState = {
+
+        email: '',
+        password: '',
+        error: '',
+        loading: false
+    }
+
+    // const { state, dispatch } = useContext(MyContext);
+
+    // let {email} = state
+
+    const [name, setName] = useState('')
+    const [message, setMessage] = useState('')
+
+    const [nameError, setNameError] = useState(false)
+    const [messageError, setMessageError] = useState(false)
+    const [fileUploadError, setFileUploadError] = useState(false)
+
+    const {register, handleSubmit, formState: {errors}, control} = useForm()
+
+    const [isScheduleLater, setIsScheduleLater] = useState(false)
 
 
     const [isSlackAuthDB, setIsSlackAuthDB] = useState(false)
@@ -135,27 +124,47 @@ const EmployeeForm = () => {
         slackCheckBoxFlag = toBeReturnedFlags["slackCheckBoxFlag"]
         twitterCheckBoxFlag = toBeReturnedFlags["twitterCheckBoxFlag"]
         teamsCheckBoxFlag = toBeReturnedFlags["teamsCheckBoxFlag"]
+
+
     }
 
     const stylers = useStyle()
 
-    const {userName, message} = store
 
-    console.log(`userName = ${userName} and message = ${message}`)
-
-    return useObserver(() =>
+    return (
         <Grid container
               direction={'row'}
               alignContent={'center'}
               justifyContent={'center'}
         >
 
-            <GridUtilFormCommon>
-                <Card className={`${classes.announcePageImage}`}/>
-            </GridUtilFormCommon>
+            <Grid
+                container
+                direction={'row'}
+                alignContent={'center'}
+                justifyContent={'center'}
+                item md={6} xs={6} sm={6}>
+                {/*<Grid item>*/}
 
 
-            <GridUtilFormCommon>
+                {/*<div className={`${classes["announce-image"]}`}>xs=8</div>*/}
+                <Card className={`${classes.announcePageImage}`}>
+
+                </Card>
+            </Grid>
+
+
+
+
+            <Grid
+                className={``}
+                container
+                direction={'row'}
+                alignContent={'center'}
+                justifyContent={'center'}
+                item md={6} xs={6} sm={6}>
+
+                {/*<Grid item>*/}
                 <Paper
                     className={`p-4 ${stylers.paperContainer} ${classes['card-announce']}`}
                     variant={'elevation'}
@@ -167,7 +176,7 @@ const EmployeeForm = () => {
                               console.log(data)
                               console.log("MESSAGE")
                               console.log(data["message"])
-                              setIsMessageError(false)
+                              setMessageError(false)
                               let uploadFileName = ''
 
 
@@ -177,19 +186,14 @@ const EmployeeForm = () => {
                                   console.log("Message Roll = ", message_roll)
                                   uploadFileName = data["uploadableFiles"][0]["name"]
                                   console.log("Uploaded File Nmae = ", uploadFileName)
-                                  setIsFileUpload(true)
                               } catch (err) {
                                   console.log("No File Uploaded")
                                   uploadFileName = ''
-                                  setIsFileUpload(false)
-                              }
-
-                              {
-                                  console.log(`isFileUpload = ${isFileUpload}`)
                               }
 
                               if (!uploadFileName && !message_roll) {
-                                  setIsMessageError(true)
+                                  setMessageError(true)
+
                               }
 
 
@@ -200,57 +204,57 @@ const EmployeeForm = () => {
 
                           })}>
 
-                        <Controller
-                            control={control}
-                            name="userName"
-                            render={({field}) => {
-                                return (
-                                    <Input
-                                        label={'User Name'}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <IconAdornmentField>
-                                                    <PersonIcon/>
-                                                </IconAdornmentField>
-                                            )
-                                        }}
-                                        {...register("userName")}
-                                        error={!!errors.userName}
-                                        helperText={errors?.userName?.message}
-                                        onChange={e => store.userName = e.target.value}
 
-                                    />
+                        <TextField
+                            onChange={(e) => setName(e.target.value)}
+                            className={` ${stylers.field}`}
+                            label={'User Name'}
+                            variant={'outlined'}
+                            color={'primary'}
+                            fullWidth
+                            required
+
+                            value={currentUser.email}
+                            // error={true}
+                            InputProps={{
+                                className: stylers.input,
+                                startAdornment: (
+                                    <InputAdornment>
+                                        <IconButton>
+                                            <PersonIcon/>
+                                        </IconButton>
+                                    </InputAdornment>
                                 )
                             }}
-
-
+                            {...register("username", {required: "First Name is Required"})}
+                            error={Boolean(errors.username)}
+                            helperText={errors.username?.message}
                         />
+                        <TextField
 
 
-                        <Controller
-                            control={control}
-                            name="message"
-                            render={({field}) => {
-                                return <Input
-                                    label={'Message'}
-                                    multiline
-                                    rows={4}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <IconAdornmentField>
-                                                <MessageIcon/>
-                                            </IconAdornmentField>
-                                        )
-                                    }}
-                                    {...register("message")}
-                                    error={!!errors.message}
-                                    helperText={errors?.message?.message}
-                                    onChange={e => store.message = e.target.value
-                                    }
-                                />
+                            onChange={(e) => setMessage(e.target.value)}
+                            className={`${stylers.field}`}
+                            label={'Message'}
+                            variant={'outlined'}
+                            fullWidth
+                            required
+                            multiline
+                            rows={4}
+                            InputProps={{
+                                className: stylers.input,
+                                startAdornment: (
+                                    <InputAdornment>
+                                        <IconButton>
+                                            <MessageIcon/>
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
                             }}
-
-
+                            // value={message}
+                            {...register("message", "Either Message or a multi media file is Required")}
+                            error={messageError}
+                            helperText={messageError ? "Either Message or a multi media file is Required" : ""}
                         />
 
 
@@ -260,8 +264,8 @@ const EmployeeForm = () => {
                             type="file"
                             name="picture"
                             {...register('uploadableFiles',)}
-                            // error={isMessageError}
-                            // helperText={isMessageError?"Either Message or a multi media file is Required":""}
+                            // error={messageError}
+                            // helperText={messageError?"Either Message or a multi media file is Required":""}
                             hidden
                         />
 
@@ -299,75 +303,87 @@ const EmployeeForm = () => {
                         {/*>Please CLick ME</InputLabel>*/}
 
 
-                        <DatePickerFunc/>
-                        {/*<FormControl className={`mt-2 pb-3`} component="fieldset">*/}
-                        {/*    <FormLabel component="legend">Schedule Your Broadcast</FormLabel>*/}
-                        {/*    <Controller*/}
-                        {/*        rules={{required: true}}*/}
-                        {/*        control={control}*/}
-                        {/*        defaultValue="business"*/}
-                        {/*        name="Scheduler"*/}
-                        {/*        render={({field}) => {*/}
-                        {/*            const {name, onBlur, onChange, value} = field;*/}
-                        {/*            return (*/}
-                        {/*                <RadioGroup*/}
-                        {/*                    value={value}*/}
-                        {/*                    onBlur={onBlur}*/}
-                        {/*                    onChange={(e) => {*/}
-                        {/*                        onChange(e);*/}
-                        {/*                        console.log(e.target.value);*/}
-                        {/*                        dispatch({type: 'IS_SCHEDULE_FALSE'})*/}
-                        {/*                        // setIsScheduleLater(false)*/}
-                        {/*                        if (e.target.value === "Schedule for later") {*/}
-                        {/*                            // setIsScheduleLater(true)*/}
-                        {/*                            dispatch({type: 'IS_SCHEDULE_TRUE'})*/}
-                        {/*                        }*/}
+                        <FormControl className={`mt-2 pb-3`} component="fieldset">
+                            <FormLabel component="legend">Schedule Your Broadcast</FormLabel>
+                            <Controller
+                                rules={{required: true}}
+                                control={control}
+                                defaultValue="business"
+                                name="Scheduler"
+                                render={({field}) => {
+                                    const {name, onBlur, onChange, value} = field;
+                                    return (
+                                        <RadioGroup
 
-                        {/*                    }}*/}
-                        {/*                >*/}
-                        {/*                    <FormControlLabel*/}
-                        {/*                        value="BroadCast right now"*/}
-                        {/*                        control={<Radio/>}*/}
-                        {/*                        label="BroadCast right now"*/}
-                        {/*                    />*/}
-                        {/*                    <FormControlLabel*/}
-                        {/*                        value="Schedule for later"*/}
-                        {/*                        control={<Radio/>}*/}
-                        {/*                        label="Schedule for later"*/}
-                        {/*                    />*/}
+                                            value={value}
+                                            onBlur={onBlur}
+                                            onChange={(e) => {
+                                                onChange(e);
+                                                console.log(e.target.value);
+                                                setIsScheduleLater(false)
+                                                if (e.target.value === "Schedule for later") {
+                                                    setIsScheduleLater(true)
+                                                }
 
-                        {/*                </RadioGroup>*/}
-                        {/*            );*/}
-                        {/*        }}*/}
-                        {/*    />*/}
-                        {/*</FormControl>*/}
+                                            }}
+                                        >
+                                            <FormControlLabel
+                                                value="BroadCast right now"
+                                                control={<Radio/>}
+                                                label="BroadCast right now"
+                                            />
+                                            <FormControlLabel
+                                                value="Schedule for later"
+                                                control={<Radio/>}
+                                                label="Schedule for later"
+                                            />
 
-                        {/*{isScheduleLater ?*/}
-                        {/*    <div>*/}
-                        {/*        <MuiPickersUtilsProvider utils={DateFnsUtils}>*/}
+                                        </RadioGroup>
+                                    );
+                                }}
+                            />
+                            {/*<RadioGroup*/}
+                            {/*    aria-label="gender"*/}
+                            {/*    defaultValue="BroadCast right now"*/}
+                            {/*    name="radio-buttons-group"*/}
+                            {/*>*/}
+                            {/*    <FormControlLabel*/}
+                            {/*        value="BroadCast right now"*/}
+                            {/*        control={<Radio inputRef={register}/>}*/}
+                            {/*        label="BroadCast right now"/>*/}
+                            {/*    <FormControlLabel*/}
+                            {/*        value="Schedule for later"*/}
+                            {/*        control={<Radio inputRef={register}/>}*/}
+                            {/*        label="Schedule for later"/>*/}
+                            {/*</RadioGroup>*/}
+                        </FormControl>
+
+                        {isScheduleLater ?
+                            <div>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
 
 
-                        {/*            <Controller*/}
+                                    <Controller
 
-                        {/*                render={({*/}
-                        {/*                             field: {onChange, onBlur, value, name, ref},*/}
-                        {/*                         }) => (*/}
-                        {/*                    <KeyboardDateTimePicker*/}
-                        {/*                        minDate={new Date()}*/}
-                        {/*                        margin={"normal"}*/}
-                        {/*                        label={"Select Date & Time"}*/}
-                        {/*                        value={value}*/}
-                        {/*                        onChange={onChange}*/}
-                        {/*                    />*/}
-                        {/*                )}*/}
-                        {/*                name={'date_schedule'}*/}
-                        {/*                defaultValue={null}*/}
-                        {/*                control={control}*/}
-                        {/*            />*/}
+                                        render={({
+                                                     field: {onChange, onBlur, value, name, ref},
+                                                 }) => (
+                                            <KeyboardDateTimePicker
+                                                minDate={new Date()}
+                                                margin={"normal"}
+                                                label={"Select Date & Time"}
+                                                value={value}
+                                                onChange={onChange}
+                                            />
+                                        )}
+                                        name={'date_schedule'}
+                                        defaultValue={null}
+                                        control={control}
+                                    />
 
-                        {/*        </MuiPickersUtilsProvider>*/}
-                        {/*    </div>*/}
-                        {/*    : ""}*/}
+                                </MuiPickersUtilsProvider>
+                            </div>
+                            : ""}
 
 
                         {/*<FormGroup>*/}
@@ -421,9 +437,17 @@ const EmployeeForm = () => {
                         {/*</FormControl>*/}
 
 
-                        <PrimaryButton type={'submit'}>
+                        <Button
+                            className={classes.submitBtn}
+
+                            variant={"contained"}
+                            color={'success'}
+                            style={{backgroundColor: '#0d0f53', color: '#FFFFFF'}}
+                            type={'submit'}
+
+                        >
                             Submit
-                        </PrimaryButton>
+                        </Button>
 
 
                         <ModalAnnouncePage/>
@@ -431,10 +455,11 @@ const EmployeeForm = () => {
 
                     </form>
                 </Paper>
-            </GridUtilFormCommon>
+            </Grid>
 
 
         </Grid>
+
     );
 };
 
