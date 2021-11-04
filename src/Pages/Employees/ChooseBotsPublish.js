@@ -19,12 +19,15 @@ import {
     Radio, Checkbox
 
 } from '@material-ui/core'
-import {useForm, Controller} from 'react-hook-form'
+import {useForm, Controller, useFormContext} from 'react-hook-form'
 
 const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
 
+    const methods = useFormContext();
+    const {control, register} = methods;
 
-    const {register, handleSubmit, formState: {errors}, control} = useForm()
+
+    // const {register, handleSubmit, formState: {errors}, control} = useForm()
 
 
     const {isSlackAuthDB, isTwitterAuthDB, isTeamsAuthDB} = authFlags;
@@ -41,7 +44,7 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
         value: "slackCheckBoxFlag",
         label: "Slack",
         labelPlacement: "slack",
-        hrefLink:"https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
+        hrefLink: "https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
 
 
     },
@@ -51,7 +54,7 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
             value: "twitterCheckBoxFlag",
             label: "Twitter",
             labelPlacement: "twitter",
-            hrefLink:"https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
+            hrefLink: "https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
 
 
         },
@@ -61,18 +64,12 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
             value: "teamsCheckBoxFlag",
             label: "Teams",
             labelPlacement: "teams",
-            hrefLink:"https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
+            hrefLink: "https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
 
         }]
 
 
     const checkBoxChangeHandler = () => {
-
-        // var cont = document.getElementById('checkBoxComponent').children;
-
-
-        let checkBoxers = document.querySelectorAll('input[type=checkBox]')
-
         let toBeReturnedFlags = {
             "slackCheckBoxFlag": false,
             "twitterCheckBoxFlag": false,
@@ -80,19 +77,10 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
         }
 
 
-        // console.log(`checkBoxers length = ${checkBoxers.length}`)
-
-        for (let i = 0; i < checkBoxers.length; i++) {
-
-
-            if (checkBoxers[i].checked) {
-                toBeReturnedFlags[checkBoxers[i].value] = true
-            }
-
-        }
         return onFlagSender(toBeReturnedFlags);
 
     }
+    const [checkemail, setcheckemail] = useState(true);
 
 
     return (
@@ -107,19 +95,11 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
             {
 
                 Object.entries(toBeIterated).map(entry => {
-                    // const [key, value] = entry;
 
                     const {authFlag, icon} = entry[1]
-                    // console.log(authFlag)
-                    // console.log(icon)
-
 
                     return !authFlag ? <Card key={'' + Math.random()} className={'d-inline p-3 mt-3 mr-3'}>
                         {
-                            // <a href='/posts/'{post.id}>{post.title}</a>
-                            // < div className={'d-inline'}>
-                            //     {icon}
-                            // </div>
                             < a href={entry[1].hrefLink}
                                 className={'d-inline'}
                                 target="_blank">
@@ -144,76 +124,33 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
                 {
 
                     Object.entries(toBeIterated).map(entry => {
-                        // const [key, value] = entry;
 
                         const {authFlag, icon, value, label, labelPlacement} = entry[1]
-                        // console.log(authFlag)
-                        // console.log(icon)
-                        // console.log(`value = ${value}`)
 
 
                         return authFlag ?
                             <div key={'' + Math.random()} className={'d-inline'}>
                                 {
                                     <FormGroup aria-label="position" row className={'d-inline'}>
-                                        <FormControlLabel
-
-                                            value={value}
-                                            control={<Checkbox/>}
-                                            label={label}
-                                            labelPlacement={labelPlacement}
-                                            // onChange={onFlagSender(checkBoxChangeHandler)}
-                                            onChange={checkBoxChangeHandler}
-                                        />
+                                        <section className={'d-inline'}>
+                                            <Controller
+                                                name={label}
+                                                control={control}
+                                                render={({field}) => (
+                                                    <Checkbox
+                                                        onChange={(e) => field.onChange(e.target.checked)}
+                                                        checked={field.value}
+                                                    />
+                                                )}
+                                            />
+                                            <label>{label}</label>
+                                        </section>
                                     </FormGroup>
                                 }
                             </div> : ""
                     })
-
                 }
-
-
             </FormControl>
-
-
-            {/*<FormControl component="fieldset" className={'d-block p-3 mt-3'}>*/}
-            {/*    <FormLabel component="legend">Please Choose the platform you want the message to be*/}
-            {/*        broadcasted</FormLabel>*/}
-            {/*    <FormGroup aria-label="position" row>*/}
-
-            {/*        {displaySlackCheckBox ?*/}
-            {/*            <FormControlLabel*/}
-            {/*                value="slack"*/}
-            {/*                control={<Checkbox/>}*/}
-            {/*                label="Slack"*/}
-            {/*                labelPlacement="slack"*/}
-            {/*            /> : ""}*/}
-            {/*        {displayTwitterCheckBox ? <FormControlLabel*/}
-            {/*            value="twitter"*/}
-            {/*            control={<Checkbox/>}*/}
-            {/*            label="Twitter"*/}
-            {/*            labelPlacement="twitter"*/}
-            {/*        /> : ""*/}
-
-
-            {/*        }*/}
-            {/*        {displayTeamsCheckBox ?*/}
-            {/*            <FormControlLabel*/}
-            {/*                value="teams"*/}
-            {/*                control={<Checkbox/>}*/}
-            {/*                label="Teams"*/}
-            {/*                labelPlacement="teams"*/}
-
-            {/*                onChange={(e) => console.log(e.target)}*/}
-            {/*            /> : ""}*/}
-
-
-            {/*    </FormGroup>*/}
-
-
-            {/*</FormControl>*/}
-
-
         </form>
     );
 };
