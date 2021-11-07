@@ -20,8 +20,9 @@ import {
 
 } from '@material-ui/core'
 import {useForm, Controller, useFormContext} from 'react-hook-form'
-
+import {StoreContext} from '../../contexts/MobxStoreContext';
 const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
+    const store = React.useContext(StoreContext);
 
     const methods = useFormContext();
     const {control, register} = methods;

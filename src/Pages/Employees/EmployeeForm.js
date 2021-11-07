@@ -9,10 +9,12 @@ import {
     Card,
 } from '@material-ui/core'
 
+
+
+
 import {makeStyles} from '@material-ui/styles';
 import {useForm, Controller, FormProvider, useFormContext} from 'react-hook-form'
 import ChooseBotsPublish from './ChooseBotsPublish'
-import ModalAnnouncePage from "./ModalAnnouncePage";
 import DatePickerFunc from "../Employees/DatepickerFunc";
 import {StoreContext} from '../../contexts/MobxStoreContext';
 import GridUtilFormCommon from "../utils/GridUtilFormCommon";
@@ -24,6 +26,7 @@ import IconAdornmentField from "../utils/IconAdornmentField";
 import {PrimaryButton} from "../utils/PrimaryButton";
 import {useObserver} from "mobx-react";
 import {FileUploader} from '../utils/FileUploader'
+import {useHistory} from "react-router-dom";
 
 const schema = yup.object().shape({
     userName:
@@ -34,6 +37,8 @@ const schema = yup.object().shape({
 })
 
 const EmployeeForm = () => {
+
+    const history = useHistory()
     const store = React.useContext(StoreContext);
 
     console.log(`bugs = ${store.bugs} and message = ${store.message}`)
@@ -45,7 +50,7 @@ const EmployeeForm = () => {
         resolver: yupResolver(schema)
     })
 
-    const { control, register, formState: {errors}} = methods;
+    const {control, register, formState: {errors}, getValues} = methods;
 
 
     const [isMessageError, setIsMessageError] = useState(false)
@@ -85,6 +90,10 @@ const EmployeeForm = () => {
         slackCheckBoxFlag = toBeReturnedFlags["slackCheckBoxFlag"]
         twitterCheckBoxFlag = toBeReturnedFlags["twitterCheckBoxFlag"]
         teamsCheckBoxFlag = toBeReturnedFlags["teamsCheckBoxFlag"]
+
+        console.log(`slackCheckBoxFlag = ${slackCheckBoxFlag}`)
+        console.log(`twitterCheckBoxFlag = ${twitterCheckBoxFlag}`)
+        console.log(`teamsCheckBoxFlag = ${teamsCheckBoxFlag}`)
     }
 
     const stylers = useStyle()
@@ -114,6 +123,29 @@ const EmployeeForm = () => {
                     <FormProvider {...methods}>
                         <form className={`${stylers.alignItemsAndJustifyContent}`} noValidate autoComplete={'off'}
                               onSubmit={methods.handleSubmit((data) => {
+
+                                  let {
+                                      Scheduler,
+                                      Slack,
+                                      Twitter,
+                                      Teams,
+                                      date_schedule,
+                                      files
+                                  } = data
+
+                                  if (Scheduler === "BroadCast right now") {
+                                      date_schedule = new Date()
+                                  }
+
+                                  store.scheduler = Scheduler
+                                  store.isScheduleLater = Scheduler === "BroadCast right now"
+                                  store.isSlackCheckBoxFlag = typeof Slack === "undefined" ? false : true
+                                  store.isTwitterCheckBoxFlag = typeof Twitter === "undefined" ? false : true
+                                  store.isTeamsCheckBoxFlag = typeof Teams === "undefined" ? false : true
+                                  store.mediaFile = files
+                                  store.dateSchedule = date_schedule
+
+
                                   console.log(data)
                                   console.log("MESSAGE")
                                   console.log(data["message"])
@@ -136,11 +168,21 @@ const EmployeeForm = () => {
 
                                   {
                                       console.log(`isFileUpload = ${isFileUpload}`)
+
                                   }
+
+
+                                  // console.log("getValues(Slack) = ", getValues("Slack"))
+
+                                  store.isSlackCheckBoxFlag = getValues("Slack")
 
                                   if (!uploadFileName && !message_roll) {
                                       setIsMessageError(true)
                                   }
+
+                                  history.push('/confirm')
+
+
                               })}>
 
                             <Controller
@@ -204,11 +246,9 @@ const EmployeeForm = () => {
                             />
 
                             <PrimaryButton type={'submit'}>
-                                Submit
+                                Review
                             </PrimaryButton>
 
-
-                            <ModalAnnouncePage/>
 
 
                         </form>

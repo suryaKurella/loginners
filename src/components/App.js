@@ -8,6 +8,7 @@ import Login from './Login'
 import SignUpSignIn from './SignUpSignIn'
 import Employees from "../Pages/Employees/Employees";
 import NavBar from "../Test/NavBar";
+import StoreProvider from "../contexts/MobxStoreContext";
 
 function App() {
 
@@ -17,7 +18,9 @@ function App() {
         <>
 
             {/*<NavBar/>*/}
-            <SignUpSignIn/>
+            <StoreProvider>
+                <SignUpSignIn/>
+            </StoreProvider>
             {/*<Employees/>*/}
 
 

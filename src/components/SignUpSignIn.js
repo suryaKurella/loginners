@@ -5,7 +5,7 @@ import {AuthProvider} from "../contexts/AuthContext";
 import Signup from "./Signup";
 import Login from "./Login";
 import Employees from "../Pages/Employees/Employees";
-
+import ConfirmPage from './ConfirmPage'
 const SignUpSignIn = () => {
 
     const [oldUser, setOldUser] = useState(false)
@@ -30,6 +30,7 @@ const SignUpSignIn = () => {
                             {/*</Container>*/}
 
                             <Route path={'/announceform'} component={Employees}/>
+                            <Route path={'/confirm'} component={ConfirmPage}/>
 
                         </Switch>
                     </AuthProvider>

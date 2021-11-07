@@ -13,9 +13,9 @@ const Employees = () => {
 
     return (
 
-        <StoreProvider>
+        // <StoreProvider>
             <EmployeeForm/>
-        </StoreProvider>
+        // </StoreProvider>
     );
 };
 

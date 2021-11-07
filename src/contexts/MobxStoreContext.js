@@ -7,16 +7,16 @@ export const StoreContext = React.createContext();
 
 const StoreProvider = ({children}) => {
     const store = useLocalStore(() => ({
-        bugs: ["Centipede"],
-        addBug: bug => {
-            store.bugs.push(bug);
-        },
-        get bugsCount() {
-            return store.bugs.length;
-        },
+
         message:'',
         userName:'',
-        isScheduleLater:false
+        isScheduleLater:false,
+        isTwitterCheckBoxFlag:false,
+        isSlackCheckBoxFlag:false,
+        isTeamsCheckBoxFlag:false,
+        scheduler:'',
+        mediaFile:[],
+        dateSchedule:new Date()
     }));
 
     return (
