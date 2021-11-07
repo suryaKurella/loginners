@@ -35,7 +35,7 @@ app.post("/", limiter, async (req, res) => {
         if (req.files && req.files.files) {
             [req.files.files].flat().map((file) => {
                 // file.mv("./uploads/" + file.name);
-                createUser('hamshakala@gmail.com', JSON.stringify(req.body), file)
+                createUser('boombam@gmail.com', JSON.stringify(req.body), file)
             });
         }
 
