@@ -21,7 +21,11 @@ import {
 } from '@material-ui/core'
 import {useForm, Controller, useFormContext} from 'react-hook-form'
 import {StoreContext} from '../../contexts/MobxStoreContext';
+import Swal from "sweetalert2";
 const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
+
+    const [success, setSuccess] = useState(false);
+
     const store = React.useContext(StoreContext);
 
     const methods = useFormContext();
@@ -83,6 +87,20 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
     }
     const [checkemail, setcheckemail] = useState(true);
 
+    const botClickHandler = async () => {
+        const formData = new FormData();
+
+        formData.append("Teams Flag", "true")
+
+        const res = await fetch("http://localhost:4000/botflags", {
+            method: "POST",
+            body: formData,
+        });
+        if (res.status === 200) {
+            setSuccess(true);
+        }
+    }
+
 
     return (
         <form>
@@ -101,11 +119,14 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
 
                     return !authFlag ? <Card key={'' + Math.random()} className={'d-inline p-3 mt-3 mr-3'}>
                         {
-                            < a href={entry[1].hrefLink}
+                            < Button
+                                onClick={botClickHandler}
+
+                                // href={entry[1].hrefLink}
                                 className={'d-inline'}
                                 target="_blank">
                                 {icon}
-                            </a>
+                            </Button>
                         }
                     </Card> : ""
                 })

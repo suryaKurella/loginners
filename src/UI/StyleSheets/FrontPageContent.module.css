@@ -6,6 +6,7 @@
     font-family: Monospace, serif
     /*font-size: 18px;*/
 }
+
 .frontPageDesc-bottom {
     position: absolute;
     top: 90%;
@@ -15,31 +16,34 @@
     /*font-size: 18px;*/
 }
 
-.iconStyler-1{
+.iconStyler-1 {
     position: absolute;
-    top: 70%;
+    top: 68%;
     width: 100%;
     text-align: center;
 
 
 }
-.iconStyler-2{
+
+.iconStyler-2 {
     position: absolute;
-    top: 70%;
+    top: 68%;
     width: 100%;
-    left:35%;
+    left: 35%;
     /*text-align: center;*/
 
 }
-.iconStyler-3{
+
+.iconStyler-3 {
     position: absolute;
-    top: 70%;
+    top: 68%;
     width: 100%;
-    left:60%;
+    left: 60%;
     /*text-align: center;*/
 }
-.logoDesign{
+
+.logoDesign {
     color: #2b2b2b;
-    font-size:3rem;
+    font-size: 3rem;
     font-family: "Monotype Corsiva";
 }

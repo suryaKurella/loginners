@@ -11,9 +11,10 @@ import buttoners from '../UI/StyleSheets/Buttons.module.css'
 import boomer from '../UI/images/wrote.png'
 import Login from './Login'
 import FrontPageContent from './FrontPageContent'
-
+import AppBar from '../Pages/utils/AppBar'
 
 const Signup = () => {
+
     const emailRef = useRef()
     const passwordRef = useRef()
     const passwordConfirmRef = useRef()
@@ -25,6 +26,7 @@ const Signup = () => {
     const history = useHistory()
 
     const [isOldUser, setIsOldUser] = useState(false)
+
 
 
     const handleSubmit = async (e) => {
@@ -82,11 +84,14 @@ const Signup = () => {
 
     return (
         <div className={'align-items-center justify-content-center'}>
+            <AppBar/>
+
             <Row>
+
                 <Col className={`gap-padding`}>
 
+
                     <Card className={`${cardClasses.card} ml-0`}>
-                        {/*<img className="image2" src={boomer}/>*/}
                         <div className={'announcement text-white'}>
                             <FrontPageContent/>
                         </div>

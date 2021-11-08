@@ -9,10 +9,12 @@ import ConfirmPage from './ConfirmPage'
 const SignUpSignIn = () => {
 
     const [oldUser, setOldUser] = useState(false)
-
     return (
-        <Container className={'d-flex align-items-center justify-content-center'}
+        <Container className={'d-flex align-items-center justify-content-center p-0'}
                    style={{minWidth: '100%'}}>
+
+
+
 
             {/*<div className={'w-100'} style={{maxWidth: '400px'}}>*/}
             <div className={'w-100'}>

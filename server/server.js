@@ -25,17 +25,29 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan("dev"));
 
+app.post("/botflags", limiter, async (req, res) => {
+    try {
+        // await createUser('Hellodude@gmail.com')
+
+        console.log(JSON.stringify(req.body))
+
+        res.send({
+            status: true,
+            message: "Data is uploaded"
+        })
+    } catch (e) {
+        res.status(500).send(e.message);
+    }
+});
+
 
 app.post("/", limiter, async (req, res) => {
     try {
-
-
         // await createUser('Hellodude@gmail.com')
 
         if (req.files && req.files.files) {
             [req.files.files].flat().map((file) => {
-                // file.mv("./uploads/" + file.name);
-                createUser('boombam@gmail.com', JSON.stringify(req.body), file)
+                createUser('newEmail@gmail.com', JSON.stringify(req.body), file)
             });
         }
 
@@ -43,13 +55,6 @@ app.post("/", limiter, async (req, res) => {
             status: true,
             message: "Data is uploaded"
         })
-
-        // fs.writeFile("./uploads/data.json", JSON.stringify(req.body), "utf8", () => {
-        //     res.send({
-        //         status: true,
-        //         message: "Data is uploaded",
-        //     });
-        // });
     } catch (e) {
         res.status(500).send(e.message);
     }

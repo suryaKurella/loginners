@@ -15,14 +15,14 @@ const TABLE_NAME = "1Announce";
 export const createUser = async (email, body, file) => {
     console.log("FIle name = ")
     console.log(file.name)
-
     console.log("This func ois called")
     const params = {
         TableName: TABLE_NAME,
         Item: {
             email: email,
             body: body,
-            media: file
+            media: file,
+            createdOn: new Date().toString()
         },
         key: {
             "email": email
@@ -33,6 +33,7 @@ export const createUser = async (email, body, file) => {
     return await dynamoClient.put(params).promise();
 
 }
+
 
 export const addOrUpdateCharacter = async (email) => {
     const params = {
