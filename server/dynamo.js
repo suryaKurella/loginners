@@ -47,6 +47,58 @@ export const addOrUpdateCharacter = async (email) => {
 }
 
 
+export const addOrUpdateAuthFlags = async (email, authFlags) => {
+
+    console.log("Entered the add flags func")
+
+    console.log("Logging inside add func ")
+    console.log(authFlags)
+
+    authFlags = JSON.parse(authFlags);
+    console.log(authFlags)
+
+    const teamsAuthDBB = (authFlags["isTeamsAuthDBB"] === 'true');
+    const twitterAuthDBB = (authFlags["isTwitterAuthDBB"] === 'true');
+    const slackAuthDBB = (authFlags["isSlackAuthDBB"] === 'true');
+
+
+    console.log(`teamsAuthDBB = ${teamsAuthDBB}`)
+    console.log(`twitterAuthDBB = ${twitterAuthDBB}`)
+    console.log(`slackAuthDBB = ${slackAuthDBB}`)
+
+
+    const params = {
+        TableName: TABLE_NAME,
+        Item: {
+            email,
+            // isTeamsAuthDBB: authFlags["isTeamsAuthDBB"],
+            // isTwitterAuthDBB: authFlags["isTwitterAuthDBB"],
+            // isSlackAuthDBB: authFlags["isSlackAuthDBB"]
+            isTeamsAuthDBB: teamsAuthDBB,
+            isTwitterAuthDBB: twitterAuthDBB,
+            isSlackAuthDBB: slackAuthDBB
+        },
+        key: {
+            email
+        }
+    }
+    return await dynamoClient.put(params).promise();
+}
+
+
+export const getAuthFlagsDb = async () => {
+
+    const params = {
+        TableName: TABLE_NAME
+    }
+    const authFlags = await dynamoClient.scan(params).promise();
+
+    console.log(authFlags)
+    return authFlags
+
+}
+
+
 export const getCharacters = async () => {
     const params = {
         TableName: TABLE_NAME

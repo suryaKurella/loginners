@@ -22,9 +22,19 @@ import {
 import {useForm, Controller, useFormContext} from 'react-hook-form'
 import {StoreContext} from '../../contexts/MobxStoreContext';
 import Swal from "sweetalert2";
-const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
+import {useObserver} from "mobx-react";
+
+const SLACK_LABEL = "Slack"
+const TWITTER_LABEL = "Twitter"
+const TEAMS_LABEL = "Teams"
+
+const ChooseBotsPublish = ({onAuthLocalFlagsSender, onFlagSender, authFlags}) => {
 
     const [success, setSuccess] = useState(false);
+
+    const [isTeamsLoading, setIsTeamsLoading] = useState(false)
+    const [isTwitterLoading, setIsTwitterLoading] = useState(false)
+    const [isSlackLoading, setIsSlackLoading] = useState(false)
 
     const store = React.useContext(StoreContext);
 
@@ -47,7 +57,7 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
         authFlag: isSlackAuthDB,
         icon: <img src="https://img.icons8.com/color/48/000000/slack-new.png"/>,
         value: "slackCheckBoxFlag",
-        label: "Slack",
+        label: SLACK_LABEL,
         labelPlacement: "slack",
         hrefLink: "https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
 
@@ -57,7 +67,7 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
             authFlag: isTwitterAuthDB,
             icon: <img src="https://img.icons8.com/color/48/000000/twitter-circled--v2.png"/>,
             value: "twitterCheckBoxFlag",
-            label: "Twitter",
+            label: TWITTER_LABEL,
             labelPlacement: "twitter",
             hrefLink: "https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
 
@@ -67,7 +77,7 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
             authFlag: isTeamsAuthDB,
             icon: <img src="https://img.icons8.com/fluency/48/000000/microsoft-teams-2019.png"/>,
             value: "teamsCheckBoxFlag",
-            label: "Teams",
+            label: TEAMS_LABEL,
             labelPlacement: "teams",
             hrefLink: "https://slack.com/oauth/v2/authorize?client_id=920553244658.2619617391527&scope=chat:write,chat:write.public,incoming-webhook,channels:read,users:write&user_scope=channels:write,chat:write,channels:read%22><img"
 
@@ -87,7 +97,16 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
     }
     const [checkemail, setcheckemail] = useState(true);
 
-    const botClickHandler = async () => {
+    const [isSlackAuthClickedFormLocal, setIsSlackAuthClickedFormLocal] = useState(toBeIterated[0].authFlag)
+    const [isTwitterAuthClickedFormLocal, setIsTwitterAuthClickedFormLocal] = useState(toBeIterated[1].authFlag)
+    const [isTeamsAuthClickedFormLocal, setIsTeamsAuthClickedFormLocal] = useState(toBeIterated[2].authFlag)
+
+    const botClickHandler = async (e) => {
+
+        console.log("Bammer")
+        console.log(e.target.value)
+
+
         const formData = new FormData();
 
         formData.append("Teams Flag", "true")
@@ -102,7 +121,7 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
     }
 
 
-    return (
+    return useObserver(() =>
         <form>
 
             {(!isSlackAuthDB || !isTwitterAuthDB || !isTeamsAuthDB) ?
@@ -115,23 +134,85 @@ const ChooseBotsPublish = ({onFlagSender, authFlags}) => {
 
                 Object.entries(toBeIterated).map(entry => {
 
-                    const {authFlag, icon} = entry[1]
+                    const {authFlag, icon, label} = entry[1]
 
-                    return !authFlag ? <Card key={'' + Math.random()} className={'d-inline p-3 mt-3 mr-3'}>
-                        {
-                            < Button
-                                onClick={botClickHandler}
+                    return !authFlag &&
 
-                                // href={entry[1].hrefLink}
-                                className={'d-inline'}
-                                target="_blank">
-                                {icon}
-                            </Button>
-                        }
-                    </Card> : ""
+
+                        <Card key={'' + Math.random()} className={'d-inline p-3 mt-3 mr-3'}>
+                            {
+
+                                < Button
+
+                                    disabled={isSlackLoading}
+                                    // onClick={botClickHandler}
+                                    onClick={async () => {
+
+
+                                        if (label === SLACK_LABEL) {
+                                            setIsSlackLoading(true)
+                                            store.isSlackAuthLocalMobXFlag = true
+                                            setIsSlackAuthClickedFormLocal(true)
+                                            console.log(' store.isSlackAuthLocalMobXFlag = ')
+                                            console.log(store.isSlackAuthLocalMobXFlag)
+                                        } else if (label === TWITTER_LABEL) {
+                                            setIsSlackLoading(true)
+                                            store.isTwitterAuthLocalMobXFlag = true
+                                            setIsTwitterAuthClickedFormLocal(true)
+                                            console.log('store.isTwitterAuthLocalMobXFlag = ')
+                                            console.log(store.isTwitterAuthLocalMobXFlag)
+                                        } else if (label === TEAMS_LABEL) {
+                                            setIsSlackLoading(true)
+                                            store.isTeamsAuthLocalMobXFlag = true
+                                            setIsTeamsAuthClickedFormLocal(true)
+                                            console.log('store.isTeamsAuthLocalMobXFlag = ')
+                                            console.log(store.isTeamsAuthLocalMobXFlag)
+                                        }
+
+                                        onAuthLocalFlagsSender({
+                                            slackMobxFlag: store.isSlackAuthLocalMobXFlag,
+                                            twitterkMobxFlag: store.isTwitterAuthLocalMobXFlag,
+                                            teamsMobxFlag: store.isTeamsAuthLocalMobXFlag
+                                            // slackMobxFlag: isSlackAuthClickedFormLocal,
+                                            // twitterkMobxFlag: isTwitterAuthClickedFormLocal,
+                                            // teamsMobxFlag: isTeamsAuthClickedFormLocal
+
+                                        })
+
+                                        setIsSlackLoading(false)
+                                        const formData = new FormData();
+
+                                        formData.append("isTeamsAuthDBB", store.isTeamsAuthLocalMobXFlag)
+                                        formData.append("isTwitterAuthDBB", store.isTwitterAuthLocalMobXFlag)
+                                        formData.append("isSlackAuthDBB", store.isSlackAuthLocalMobXFlag)
+
+                                        const res = await fetch("http://localhost:4000/testAuthFlags", {
+                                            method: "POST",
+                                            body: formData,
+                                        });
+                                        if (res.status === 200) {
+                                            setSuccess(true);
+                                        }
+                                        // setSuccess(false) //delete this if required
+
+
+                                    }}
+
+                                    // href={entry[1].hrefLink}
+                                    className={'d-inline'}
+                                    target="_blank">
+                                    {icon}
+                                </Button>
+                            }
+                        </Card>
                 })
 
+
             }
+
+
+            {/*{setIsTwitterLoading(false)}*/}
+            {/*{setIsTeamsLoading(false)}*/}
 
 
             <FormControl component="fieldset" className={'d-block mt-3 pb-3'} id={'checkBoxComponent'}>

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useReducer, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useReducer, useState} from 'react';
 import classes from '../StyleSheets/AnnouncementPage.module.css'
 import greenImg from 'D://Surya//Software LEarning//loginners//src//UI//images//green.jpeg';
 import PersonIcon from '@mui/icons-material/Person';
@@ -8,8 +8,6 @@ import {
     Paper,
     Card,
 } from '@material-ui/core'
-
-
 
 
 import {makeStyles} from '@material-ui/styles';
@@ -28,6 +26,13 @@ import {useObserver} from "mobx-react";
 import {FileUploader} from '../utils/FileUploader'
 import {useHistory} from "react-router-dom";
 
+import axios from 'axios'
+import {autorun} from "mobx";
+
+const url = 'http://localhost:4000/authFlags'
+const fetchAuthDBFlags = () => axios.get(url)
+
+
 const schema = yup.object().shape({
     userName:
         yup.string().matches(/^([^0-9]*)$/, "User Name should not contain numbers")
@@ -37,9 +42,101 @@ const schema = yup.object().shape({
 })
 
 const EmployeeForm = () => {
+    const store = useContext(StoreContext)
+
+    const [isMessageError, setIsMessageError] = useState(false)
+    const [isFileUpload, setIsFileUpload] = useState(false)
+
+
+    const [isSlackAuthDB, setIsSlackAuthDB] = useState(false)
+    const [isTwitterAuthDB, setIsTwitterAuthDB] = useState(false)
+    const [isTeamsAuthDB, setIsTeamsAuthDB] = useState(false)
+
+    let [slackCheckBoxFlag, twitterCheckBoxFlag, teamsCheckBoxFlag] = [false, false, false]
+
+
+    // const getAuthDBFlags = async () => {
+    //     try {
+    //         const {data} = await fetchAuthDBFlags()
+    //
+    //         const {isTeamsAuthDBB, isTwitterAuthDBB, isSlackAuthDBB} = data.Items[0]
+    //
+    //         setIsSlackAuthDB(isSlackAuthDBB)
+    //         setIsTwitterAuthDB(isTwitterAuthDBB)
+    //         setIsTeamsAuthDB(isTeamsAuthDBB)
+    //         console.log(`data on ui `)
+    //         console.log(data)
+    //         console.log(`isTeamsAuthDBB = ${isTeamsAuthDBB}`)
+    //         console.log(`isTeamsAuthDBB = ${isTwitterAuthDBB}`)
+    //         console.log(`isTeamsAuthDBB = ${isSlackAuthDBB}`)
+    //
+    //     } catch (error) {
+    //         console.log("Hey i am in here ")
+    //         console.error(error)
+    //     }
+    //
+    // }
+    //
+    // console.log(`fetchAuthDBFlags = `)
+
+
+    const fetchData = async () => {
+
+        console.log("Entered here dude with the click ")
+
+        try {
+            const {data} = await fetchAuthDBFlags()
+            // const {data} = await axios.get(url)
+
+            const {isTeamsAuthDBB, isTwitterAuthDBB, isSlackAuthDBB} = data.Items[0]
+
+
+            setIsSlackAuthDB(isSlackAuthDBB)
+            setIsTwitterAuthDB(isTwitterAuthDBB)
+            setIsTeamsAuthDB(isTeamsAuthDBB)
+            console.log(`data on ui `)
+            console.log(data)
+            console.log(`isTeamsAuthDBB = ${isTeamsAuthDBB}`)
+            console.log(`isTeamsAuthDBB = ${isTwitterAuthDBB}`)
+            console.log(`isTeamsAuthDBB = ${isSlackAuthDBB}`)
+
+        } catch (error) {
+            console.log("Hey i am in here ")
+            console.error(error)
+        }
+
+
+    }
+
+    const [isLocalTeamsAuthFlag, setIsLocalTeamsAuthFlag] = useState(false)
+    const [isLocalTwitterAuthFlag, setIsLocalTwitterAuthFlag] = useState(false)
+    const [isLocalSlackAuthFlag, setIsLocalSlackAuthFlag] = useState(false)
+
+
+    console.log(' store.isSlackAuthLocalMobXFlag = ')
+    console.log(store.isSlackAuthLocalMobXFlag)
+    console.log('---------------------')
+    console.log('store.isTwitterAuthLocalMobXFlag = ')
+    console.log(store.isTwitterAuthLocalMobXFlag)
+    console.log('---------------------')
+    console.log('store.isTeamsAuthLocalMobXFlag = ')
+    console.log(store.isTeamsAuthLocalMobXFlag)
+
+    useEffect(autorun(() => {
+        return fetchData();
+        // }, [isLocalTeamsAuthFlag, isLocalTwitterAuthFlag, isLocalSlackAuthFlag])
+    }))
+
+    // useEffect(()=>{
+    //     getAuthDBFlags()
+    // }, [1])
+    // useEffect(()=>{
+    //     getAuthDBFlags()
+    // }, [1])
+
 
     const history = useHistory()
-    const store = React.useContext(StoreContext);
+
 
     console.log(`bugs = ${store.bugs} and message = ${store.message}`)
 
@@ -51,17 +148,6 @@ const EmployeeForm = () => {
     })
 
     const {control, register, formState: {errors}, getValues} = methods;
-
-
-    const [isMessageError, setIsMessageError] = useState(false)
-    const [isFileUpload, setIsFileUpload] = useState(false)
-
-
-    const [isSlackAuthDB, setIsSlackAuthDB] = useState(true)
-    const [isTwitterAuthDB, setIsTwitterAuthDB] = useState(true)
-    const [isTeamsAuthDB, setIsTeamsAuthDB] = useState(false)
-
-    let [slackCheckBoxFlag, twitterCheckBoxFlag, teamsCheckBoxFlag] = [false, false, false]
 
 
     const useStyle = makeStyles(theme => (
@@ -94,6 +180,20 @@ const EmployeeForm = () => {
         console.log(`slackCheckBoxFlag = ${slackCheckBoxFlag}`)
         console.log(`twitterCheckBoxFlag = ${twitterCheckBoxFlag}`)
         console.log(`teamsCheckBoxFlag = ${teamsCheckBoxFlag}`)
+    }
+
+
+    const AuthFlagsUeCheckHandler = (AuthFlagsReturenedFromCheckBoxComp) => {
+
+        const {slackMobxFlag, teamsMobxFlag, twitterMobxFlag} = AuthFlagsReturenedFromCheckBoxComp
+
+        setIsLocalTeamsAuthFlag(store.isTeamsAuthLocalMobXFlag)
+        setIsLocalTwitterAuthFlag(store.isTwitterAuthLocalMobXFlag)
+        setIsLocalSlackAuthFlag(store.isSlackAuthLocalMobXFlag)
+
+        console.log("Yover")
+        console.log(AuthFlagsReturenedFromCheckBoxComp)
+
     }
 
     const stylers = useStyle()
@@ -241,6 +341,7 @@ const EmployeeForm = () => {
                             <DatePickerFunc/>
 
                             <ChooseBotsPublish
+                                onAuthLocalFlagsSender={AuthFlagsUeCheckHandler}
                                 onFlagSender={BotsCheckBoxHandler}
                                 authFlags={{isSlackAuthDB, isTwitterAuthDB, isTeamsAuthDB}}
                             />
@@ -248,7 +349,6 @@ const EmployeeForm = () => {
                             <PrimaryButton type={'submit'}>
                                 Review
                             </PrimaryButton>
-
 
 
                         </form>

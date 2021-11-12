@@ -5,7 +5,7 @@ import fileUpload from 'express-fileupload'
 import cors from "cors"
 import morgan from "morgan"
 import rateLimit from "express-rate-limit"
-import {addOrUpdateCharacter, createUser} from './dynamo.js'
+import {addOrUpdateAuthFlags, addOrUpdateCharacter, createUser, getAuthFlagsDb} from './dynamo.js'
 
 const app = express();
 
@@ -25,6 +25,45 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan("dev"));
 
+
+// here i am posting the frontend Authorization flags so that these get updated into DB
+app.post("/testAuthFlags", async (req, res) => {
+
+    try {
+        console.log("Hoy")
+
+        // await req.body
+
+        console.log(JSON.stringify(req.body))
+
+
+        const reqBodyString = JSON.stringify(req.body)
+
+        console.log("the reqBodyString = ")
+        console.log(reqBodyString)
+
+
+        await addOrUpdateAuthFlags("boomer@gmail.com", reqBodyString, "utf8", () => {
+            res.send({
+                status: true,
+                message: "Data received this end"
+            })
+        })
+
+
+        // console.log(JSON.stringify(req.body), "utf8", () => {
+        //     res.send({
+        //         status: true,
+        //         message: "Data received this end"
+        //     })
+        // })
+    } catch (error) {
+        console.error(error)
+    }
+
+})
+
+
 app.post("/botflags", limiter, async (req, res) => {
     try {
         // await createUser('Hellodude@gmail.com')
@@ -41,24 +80,45 @@ app.post("/botflags", limiter, async (req, res) => {
 });
 
 
-app.post("/", limiter, async (req, res) => {
+// app.post("/", limiter, async (req, res) => {
+//     try {
+//         // await createUser('Hellodude@gmail.com')
+//
+//         if (req.files && req.files.files) {
+//             [req.files.files].flat().map((file) => {
+//                 createUser('newEmail@gmail.com', JSON.stringify(req.body), file)
+//             });
+//         }
+//
+//         res.send({
+//             status: true,
+//             message: "Data is uploaded"
+//         })
+//     } catch (e) {
+//         res.status(500).send(e.message);
+//     }
+// });
+
+app.get('/authFlags', async (req, res) => {
     try {
-        // await createUser('Hellodude@gmail.com')
+        const authDBFlags = await getAuthFlagsDb();
 
-        if (req.files && req.files.files) {
-            [req.files.files].flat().map((file) => {
-                createUser('newEmail@gmail.com', JSON.stringify(req.body), file)
-            });
-        }
+        console.log(`authDBFlags = `)
+        console.log(authDBFlags)
 
-        res.send({
-            status: true,
-            message: "Data is uploaded"
-        })
-    } catch (e) {
-        res.status(500).send(e.message);
+        res.status(200).json(authDBFlags);
+    } catch (error) {
+        res.status(404).json({message: error.message});
     }
-});
+})
+
+
+try {
+    const authDBFlags = getAuthFlagsDb();
+    console.log(authDBFlags)
+} catch (error) {
+}
+
 
 // app.post("/", limiter, async (req, res) => {
 //     try {
