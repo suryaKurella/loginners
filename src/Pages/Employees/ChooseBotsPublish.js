@@ -134,7 +134,7 @@ const ChooseBotsPublish = ({onAuthLocalFlagsSender, onFlagSender, authFlags}) =>
 
                 Object.entries(toBeIterated).map(entry => {
 
-                    const {authFlag, icon, label} = entry[1]
+                    let {authFlag, icon, label} = entry[1]
 
                     return !authFlag &&
 
@@ -148,6 +148,7 @@ const ChooseBotsPublish = ({onAuthLocalFlagsSender, onFlagSender, authFlags}) =>
                                     // onClick={botClickHandler}
                                     onClick={async () => {
 
+                                        // entry[1].authFlag = !authFlag
 
                                         if (label === SLACK_LABEL) {
                                             setIsSlackLoading(true)
@@ -193,7 +194,7 @@ const ChooseBotsPublish = ({onAuthLocalFlagsSender, onFlagSender, authFlags}) =>
                                         if (res.status === 200) {
                                             setSuccess(true);
                                         }
-                                        // setSuccess(false) //delete this if required
+                                        setSuccess(false) //delete this if required
 
 
                                     }}
