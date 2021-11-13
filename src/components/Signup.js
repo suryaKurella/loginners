@@ -84,7 +84,7 @@ const Signup = () => {
 
     return (
         <div className={'align-items-center justify-content-center'}>
-            <AppBar/>
+            {/*<AppBar/>*/}
 
             <Row>
 

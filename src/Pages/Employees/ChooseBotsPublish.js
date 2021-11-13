@@ -22,6 +22,7 @@ import {
 import {useForm, Controller, useFormContext} from 'react-hook-form'
 import {StoreContext} from '../../contexts/MobxStoreContext';
 import Swal from "sweetalert2";
+import classes from '../StyleSheets/ChooseBotsPublish.module.css'
 import {useObserver} from "mobx-react";
 
 const SLACK_LABEL = "Slack"
@@ -29,6 +30,14 @@ const TWITTER_LABEL = "Twitter"
 const TEAMS_LABEL = "Teams"
 
 const ChooseBotsPublish = ({onAuthLocalFlagsSender, onFlagSender, authFlags}) => {
+
+    const yup = require('yup');
+
+
+
+    const validateOptions = { abortEarly: false };
+
+
 
     const [success, setSuccess] = useState(false);
 
@@ -124,97 +133,25 @@ const ChooseBotsPublish = ({onAuthLocalFlagsSender, onFlagSender, authFlags}) =>
     return useObserver(() =>
         <form>
 
-            {(!isSlackAuthDB || !isTwitterAuthDB || !isTeamsAuthDB) ?
+            {
                 <InputLabel className={'mt-3 pb-3'}>
-                    Please Authorize the following Platforms for your Broadcast
-                </InputLabel> : ""}
+                    You have authorized the following platforms for Broadcast
+                </InputLabel>}
 
 
             {
-
                 Object.entries(toBeIterated).map(entry => {
+                    let {icon} = entry[1]
+                    return (
+                        <div key={'' + Math.random()} className={`d-inline p-3 mt-5 mr-3 `}>
+                            <div className={`d-inline ${classes.zoom}`}>
+                                {icon}
+                            </div>
 
-                    let {authFlag, icon, label} = entry[1]
-
-                    return !authFlag &&
-
-
-                        <Card key={'' + Math.random()} className={'d-inline p-3 mt-3 mr-3'}>
-                            {
-
-                                < Button
-
-                                    disabled={isSlackLoading}
-                                    // onClick={botClickHandler}
-                                    onClick={async () => {
-
-                                        // entry[1].authFlag = !authFlag
-
-                                        if (label === SLACK_LABEL) {
-                                            setIsSlackLoading(true)
-                                            store.isSlackAuthLocalMobXFlag = true
-                                            setIsSlackAuthClickedFormLocal(true)
-                                            console.log(' store.isSlackAuthLocalMobXFlag = ')
-                                            console.log(store.isSlackAuthLocalMobXFlag)
-                                        } else if (label === TWITTER_LABEL) {
-                                            setIsSlackLoading(true)
-                                            store.isTwitterAuthLocalMobXFlag = true
-                                            setIsTwitterAuthClickedFormLocal(true)
-                                            console.log('store.isTwitterAuthLocalMobXFlag = ')
-                                            console.log(store.isTwitterAuthLocalMobXFlag)
-                                        } else if (label === TEAMS_LABEL) {
-                                            setIsSlackLoading(true)
-                                            store.isTeamsAuthLocalMobXFlag = true
-                                            setIsTeamsAuthClickedFormLocal(true)
-                                            console.log('store.isTeamsAuthLocalMobXFlag = ')
-                                            console.log(store.isTeamsAuthLocalMobXFlag)
-                                        }
-
-                                        onAuthLocalFlagsSender({
-                                            slackMobxFlag: store.isSlackAuthLocalMobXFlag,
-                                            twitterkMobxFlag: store.isTwitterAuthLocalMobXFlag,
-                                            teamsMobxFlag: store.isTeamsAuthLocalMobXFlag
-                                            // slackMobxFlag: isSlackAuthClickedFormLocal,
-                                            // twitterkMobxFlag: isTwitterAuthClickedFormLocal,
-                                            // teamsMobxFlag: isTeamsAuthClickedFormLocal
-
-                                        })
-
-                                        setIsSlackLoading(false)
-                                        const formData = new FormData();
-
-                                        formData.append("isTeamsAuthDBB", store.isTeamsAuthLocalMobXFlag)
-                                        formData.append("isTwitterAuthDBB", store.isTwitterAuthLocalMobXFlag)
-                                        formData.append("isSlackAuthDBB", store.isSlackAuthLocalMobXFlag)
-
-                                        const res = await fetch("http://localhost:4000/testAuthFlags", {
-                                            method: "POST",
-                                            body: formData,
-                                        });
-                                        if (res.status === 200) {
-                                            setSuccess(true);
-                                        }
-                                        setSuccess(false) //delete this if required
-
-
-                                    }}
-
-                                    // href={entry[1].hrefLink}
-                                    className={'d-inline'}
-                                    target="_blank">
-                                    {icon}
-                                </Button>
-                            }
-                        </Card>
+                        </div>
+                    )
                 })
-
-
             }
-
-
-            {/*{setIsTwitterLoading(false)}*/}
-            {/*{setIsTeamsLoading(false)}*/}
-
 
             <FormControl component="fieldset" className={'d-block mt-3 pb-3'} id={'checkBoxComponent'}>
 
@@ -223,35 +160,28 @@ const ChooseBotsPublish = ({onAuthLocalFlagsSender, onFlagSender, authFlags}) =>
                         broadcasted</FormLabel> :
                     <FormLabel component="legend">Please Authorize any of the above platforms to broadcast your
                         message</FormLabel>}
-
-
                 {
-
                     Object.entries(toBeIterated).map(entry => {
-
-                        const {authFlag, icon, value, label, labelPlacement} = entry[1]
-
-
-                        return authFlag ?
+                        const {label} = entry[1]
+                        return (
                             <div key={'' + Math.random()} className={'d-inline'}>
-                                {
-                                    <FormGroup aria-label="position" row className={'d-inline'}>
-                                        <section className={'d-inline'}>
-                                            <Controller
-                                                name={label}
-                                                control={control}
-                                                render={({field}) => (
-                                                    <Checkbox
-                                                        onChange={(e) => field.onChange(e.target.checked)}
-                                                        checked={field.value}
-                                                    />
-                                                )}
-                                            />
-                                            <label>{label}</label>
-                                        </section>
-                                    </FormGroup>
-                                }
-                            </div> : ""
+                                <FormGroup aria-label="position" row className={'d-inline'}>
+                                    <section className={'d-inline'}>
+                                        <Controller
+                                            name={label}
+                                            control={control}
+                                            render={({field}) => (
+                                                <Checkbox
+                                                    onChange={(e) => field.onChange(e.target.checked)}
+                                                    checked={field.value}
+                                                />
+                                            )}
+                                        />
+                                        <label>{label}</label>
+                                    </section>
+                                </FormGroup>
+                            </div>
+                        )
                     })
                 }
             </FormControl>

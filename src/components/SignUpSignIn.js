@@ -6,6 +6,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import Employees from "../Pages/Employees/Employees";
 import ConfirmPage from './ConfirmPage'
+import AppBar from "../Pages/utils/AppBar";
 const SignUpSignIn = () => {
 
     const [oldUser, setOldUser] = useState(false)
@@ -16,9 +17,13 @@ const SignUpSignIn = () => {
 
 
 
+
+
             {/*<div className={'w-100'} style={{maxWidth: '400px'}}>*/}
             <div className={'w-100'}>
+
                 <Router>
+                    <AppBar/>
                     <AuthProvider>
                         <Switch>
                             <Route  exact path={'/'} component={Signup}/>

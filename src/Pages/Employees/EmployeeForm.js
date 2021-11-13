@@ -46,8 +46,6 @@ const EmployeeForm = () => {
 
     const [isMessageError, setIsMessageError] = useState(false)
     const [isFileUpload, setIsFileUpload] = useState(false)
-
-
     const [isSlackAuthDB, setIsSlackAuthDB] = useState(false)
     const [isTwitterAuthDB, setIsTwitterAuthDB] = useState(false)
     const [isTeamsAuthDB, setIsTeamsAuthDB] = useState(false)
@@ -124,15 +122,7 @@ const EmployeeForm = () => {
 
     useEffect(autorun(() => {
         return fetchData();
-        // }, [isLocalTeamsAuthFlag, isLocalTwitterAuthFlag, isLocalSlackAuthFlag])
     }))
-
-    // useEffect(()=>{
-    //     getAuthDBFlags()
-    // }, [1])
-    // useEffect(()=>{
-    //     getAuthDBFlags()
-    // }, [1])
 
 
     const history = useHistory()
@@ -210,6 +200,8 @@ const EmployeeForm = () => {
         >
 
             <GridUtilFormCommon>
+
+                {/*<img  src="https://i.imgur.com/gdYq73F.gif"/>*/}
                 <Card className={`${classes.announcePageImage}`}/>
             </GridUtilFormCommon>
 
@@ -239,9 +231,9 @@ const EmployeeForm = () => {
 
                                   store.scheduler = Scheduler
                                   store.isScheduleLater = Scheduler === "BroadCast right now"
-                                  store.isSlackCheckBoxFlag = typeof Slack === "undefined" ? false : true
-                                  store.isTwitterCheckBoxFlag = typeof Twitter === "undefined" ? false : true
-                                  store.isTeamsCheckBoxFlag = typeof Teams === "undefined" ? false : true
+                                  store.isSlackCheckBoxFlag = typeof Slack === "undefined" ? false : Slack
+                                  store.isTwitterCheckBoxFlag = typeof Twitter === "undefined" ? false : Twitter
+                                  store.isTeamsCheckBoxFlag = typeof Teams === "undefined" ? false : Teams
                                   store.mediaFile = files
                                   store.dateSchedule = date_schedule
 

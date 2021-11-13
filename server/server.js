@@ -80,24 +80,30 @@ app.post("/botflags", limiter, async (req, res) => {
 });
 
 
-// app.post("/", limiter, async (req, res) => {
-//     try {
-//         // await createUser('Hellodude@gmail.com')
-//
-//         if (req.files && req.files.files) {
-//             [req.files.files].flat().map((file) => {
-//                 createUser('newEmail@gmail.com', JSON.stringify(req.body), file)
-//             });
-//         }
-//
-//         res.send({
-//             status: true,
-//             message: "Data is uploaded"
-//         })
-//     } catch (e) {
-//         res.status(500).send(e.message);
-//     }
-// });
+app.post("/", limiter, async (req, res) => {
+    try {
+        // await createUser('Hellodude@gmail.com')
+
+        if (req.files && req.files.files) {
+
+            // let fromFrontend = await JSON.parse(JSON.stringify(req.body))
+            //
+            // console.log(fromFrontend)
+
+
+                [req.files.files].flat().map((file) => {
+                createUser('newEmail@gmail.com', JSON.stringify(req.body), file)
+            });
+        }
+
+        res.send({
+            status: true,
+            message: "Data is uploaded"
+        })
+    } catch (e) {
+        res.status(500).send(e.message);
+    }
+});
 
 app.get('/authFlags', async (req, res) => {
     try {
