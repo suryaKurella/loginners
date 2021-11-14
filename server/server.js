@@ -85,15 +85,11 @@ app.post("/", limiter, async (req, res) => {
         // await createUser('Hellodude@gmail.com')
 
         if (req.files && req.files.files) {
-
-            // let fromFrontend = await JSON.parse(JSON.stringify(req.body))
-            //
-            // console.log(fromFrontend)
-
-
-                [req.files.files].flat().map((file) => {
-                createUser('newEmail@gmail.com', JSON.stringify(req.body), file)
+            [req.files.files].flat().map((file) => {
+                createUser(JSON.stringify(req.body), file)
             });
+        } else {
+            await createUser(JSON.stringify(req.body))
         }
 
         res.send({

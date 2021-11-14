@@ -12,9 +12,11 @@ AWS.config.update({
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = "1Announce";
 
-export const createUser = async (email, body, file) => {
+export const createUser = async (body, file = "") => {
 
     console.log(JSON.parse(body))
+
+    const {email} = JSON.parse(body)
 
     console.log("FIle name = ")
     console.log(file.name)
