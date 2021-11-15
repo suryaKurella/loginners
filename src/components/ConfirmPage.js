@@ -119,9 +119,9 @@ const ConfirmPage = () => {
                                     </TableCell>
                                     <TableCell align="center">
                                         {
+                                            // [true, false].includes(entry[1]) ? ((entry[1] === true) ? "Yes" : "No") : entry[1].toString()
                                             [true, false].includes(entry[1]) ? ((entry[1] === true) ? "Yes" : "No") : entry[1].toString()
                                         }
-                                        {/*{entry[1].toString()}*/}
 
                                     </TableCell>
                                 </TableRow>

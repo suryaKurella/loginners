@@ -50,101 +50,13 @@ const schema = yup.object().shape({
 
 const EmployeeForm = () => {
     const store = useContext(StoreContext)
-
-
-    const [checkboxResponse, setCheckboxResponse] = useState([]);
-    const [checkboxStates, setCheckboxStates] = useState({});
-
-    const [isMessageError, setIsMessageError] = useState(false)
     const [isFileUpload, setIsFileUpload] = useState(false)
-    const [isSlackAuthDB, setIsSlackAuthDB] = useState(false)
-    const [isTwitterAuthDB, setIsTwitterAuthDB] = useState(false)
-    const [isTeamsAuthDB, setIsTeamsAuthDB] = useState(false)
-
-    let [slackCheckBoxFlag, twitterCheckBoxFlag, teamsCheckBoxFlag] = [false, false, false]
-
-    const checkboxChange = key => event => {
-        setCheckboxStates({ ...checkboxStates, [key]: event.target.checked });
-    };
-    // const getAuthDBFlags = async () => {
-    //     try {
-    //         const {data} = await fetchAuthDBFlags()
-    //
-    //         const {isTeamsAuthDBB, isTwitterAuthDBB, isSlackAuthDBB} = data.Items[0]
-    //
-    //         setIsSlackAuthDB(isSlackAuthDBB)
-    //         setIsTwitterAuthDB(isTwitterAuthDBB)
-    //         setIsTeamsAuthDB(isTeamsAuthDBB)
-    //         console.log(`data on ui `)
-    //         console.log(data)
-    //         console.log(`isTeamsAuthDBB = ${isTeamsAuthDBB}`)
-    //         console.log(`isTeamsAuthDBB = ${isTwitterAuthDBB}`)
-    //         console.log(`isTeamsAuthDBB = ${isSlackAuthDBB}`)
-    //
-    //     } catch (error) {
-    //         console.log("Hey i am in here ")
-    //         console.error(error)
-    //     }
-    //
-    // }
-    //
-    // console.log(`fetchAuthDBFlags = `)
-
-
-    const fetchData = async () => {
-
-        console.log("Entered here dude with the click ")
-
-        try {
-            const {data} = await fetchAuthDBFlags()
-            // const {data} = await axios.get(url)
-
-            const {isTeamsAuthDBB, isTwitterAuthDBB, isSlackAuthDBB} = data.Items[0]
-
-
-            setIsSlackAuthDB(isSlackAuthDBB)
-            setIsTwitterAuthDB(isTwitterAuthDBB)
-            setIsTeamsAuthDB(isTeamsAuthDBB)
-            console.log(`data on ui `)
-            console.log(data)
-            console.log(`isTeamsAuthDBB = ${isTeamsAuthDBB}`)
-            console.log(`isTeamsAuthDBB = ${isTwitterAuthDBB}`)
-            console.log(`isTeamsAuthDBB = ${isSlackAuthDBB}`)
-
-        } catch (error) {
-            console.log("Hey i am in here ")
-            console.error(error)
-        }
-
-
-    }
-
-    const [isLocalTeamsAuthFlag, setIsLocalTeamsAuthFlag] = useState(false)
-    const [isLocalTwitterAuthFlag, setIsLocalTwitterAuthFlag] = useState(false)
-    const [isLocalSlackAuthFlag, setIsLocalSlackAuthFlag] = useState(false)
-
-
-    console.log(' store.isSlackAuthLocalMobXFlag = ')
-    console.log(store.isSlackAuthLocalMobXFlag)
-    console.log('---------------------')
-    console.log('store.isTwitterAuthLocalMobXFlag = ')
-    console.log(store.isTwitterAuthLocalMobXFlag)
-    console.log('---------------------')
-    console.log('store.isTeamsAuthLocalMobXFlag = ')
-    console.log(store.isTeamsAuthLocalMobXFlag)
-
-    useEffect(autorun(() => {
-        return fetchData();
-    }))
 
 
     const history = useHistory()
 
 
     console.log(`bugs = ${store.bugs} and message = ${store.message}`)
-
-
-    // const {register, handleSubmit, formState: {errors}, control} = useForm({
     const methods = useForm({
         mode: "onBlur",
         resolver: yupResolver(schema)
@@ -174,31 +86,6 @@ const EmployeeForm = () => {
     ))
 
 
-    const BotsCheckBoxHandler = (toBeReturnedFlags) => {
-
-        slackCheckBoxFlag = toBeReturnedFlags["slackCheckBoxFlag"]
-        twitterCheckBoxFlag = toBeReturnedFlags["twitterCheckBoxFlag"]
-        teamsCheckBoxFlag = toBeReturnedFlags["teamsCheckBoxFlag"]
-
-        console.log(`slackCheckBoxFlag = ${slackCheckBoxFlag}`)
-        console.log(`twitterCheckBoxFlag = ${twitterCheckBoxFlag}`)
-        console.log(`teamsCheckBoxFlag = ${teamsCheckBoxFlag}`)
-    }
-
-
-    const AuthFlagsUeCheckHandler = (AuthFlagsReturenedFromCheckBoxComp) => {
-
-        const {slackMobxFlag, teamsMobxFlag, twitterMobxFlag} = AuthFlagsReturenedFromCheckBoxComp
-
-        setIsLocalTeamsAuthFlag(store.isTeamsAuthLocalMobXFlag)
-        setIsLocalTwitterAuthFlag(store.isTwitterAuthLocalMobXFlag)
-        setIsLocalSlackAuthFlag(store.isSlackAuthLocalMobXFlag)
-
-        console.log("Yover")
-        console.log(AuthFlagsReturenedFromCheckBoxComp)
-
-    }
-
     const stylers = useStyle()
 
     const {userName, message} = store
@@ -213,8 +100,6 @@ const EmployeeForm = () => {
         >
 
             <GridUtilFormCommon>
-
-                {/*<img  src="https://i.imgur.com/gdYq73F.gif"/>*/}
                 <Card className={`${classes.announcePageImage}`}/>
             </GridUtilFormCommon>
 
@@ -243,10 +128,19 @@ const EmployeeForm = () => {
                                   }
 
                                   store.scheduler = Scheduler
-                                  store.isScheduleLater = Scheduler === "BroadCast right now"
-                                  store.isSlackCheckBoxFlag = typeof Slack === "undefined" ? false : Slack
-                                  store.isTwitterCheckBoxFlag = typeof Twitter === "undefined" ? false : Twitter
-                                  store.isTeamsCheckBoxFlag = typeof Teams === "undefined" ? false : Teams
+                                  store.isScheduleLater = Scheduler !== "BroadCast right now"
+
+
+                                  // store.isSlackCheckBoxFlag = typeof Slack === "undefined" ? false : Slack
+                                  console.log(`Slack flag = ${Slack}`)
+                                  console.log(`Twitter flag = ${Twitter}`)
+                                  console.log(`Teams flag = ${Teams}`)
+
+                                  store.isSlackCheckBoxFlag = [true, false].includes(Slack) ? Slack : false
+                                  // store.isTwitterCheckBoxFlag = typeof Twitter === "undefined" ? false : Twitter
+                                  store.isTwitterCheckBoxFlag = [true, false].includes(Twitter) ? Twitter : false
+                                  // store.isTeamsCheckBoxFlag = typeof Teams === "undefined" ? false : Teams
+                                  store.isTeamsCheckBoxFlag = [true, false].includes(Teams) ? Teams : false
                                   store.mediaFile = files
                                   store.dateSchedule = date_schedule
 
@@ -254,7 +148,6 @@ const EmployeeForm = () => {
                                   console.log(data)
                                   console.log("MESSAGE")
                                   console.log(data["message"])
-                                  setIsMessageError(false)
                                   let uploadFileName = ''
 
 
@@ -267,29 +160,14 @@ const EmployeeForm = () => {
                                       setIsFileUpload(true)
                                   } catch (err) {
                                       console.log("No File Uploaded")
-                                      uploadFileName = ''
                                       setIsFileUpload(false)
                                   }
 
                                   {
                                       console.log(`isFileUpload = ${isFileUpload}`)
-
                                   }
-
-
-                                  // console.log("getValues(Slack) = ", getValues("Slack"))
-
-                                  store.isSlackCheckBoxFlag = getValues("Slack")
-
-                                  if (!uploadFileName && !message_roll) {
-                                      setIsMessageError(true)
-                                  }
-
                                   history.push('/confirm')
-
-
                               })}>
-
                             <Controller
                                 control={control}
                                 name="userName"
@@ -336,19 +214,14 @@ const EmployeeForm = () => {
                                     />
                                 }}
                             />
-
-                            {/* File Uploader */}
-
                             <FileUploader name="files" control={control}/>
 
                             {/* Date Picker */}
 
-                            <DatePickerFunc/>
+                            <DatePickerFunc control={control}/>
 
                             <ChooseBotsPublish
-                                onAuthLocalFlagsSender={AuthFlagsUeCheckHandler}
-                                onFlagSender={BotsCheckBoxHandler}
-                                authFlags={{isSlackAuthDB, isTwitterAuthDB, isTeamsAuthDB}}
+                                control={control}
                             />
 
                             <PrimaryButton type={'submit'}>
