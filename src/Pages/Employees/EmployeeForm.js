@@ -38,11 +38,22 @@ const schema = yup.object().shape({
         yup.string().matches(/^([^0-9]*)$/, "User Name should not contain numbers")
             .required("Please enter your User Name"),
     message:
-        yup.string().required("Please enter your message")
+        yup.string().required("Please enter your message"),
+    item_ids: yup.array()
+        .transform(ids => {
+            return ids.filter(id => {
+                return id === 0 || id;
+            });
+        })
+        .min(1, "Please choose atleast one platform for the message to be broadcasted")
 })
 
 const EmployeeForm = () => {
     const store = useContext(StoreContext)
+
+
+    const [checkboxResponse, setCheckboxResponse] = useState([]);
+    const [checkboxStates, setCheckboxStates] = useState({});
 
     const [isMessageError, setIsMessageError] = useState(false)
     const [isFileUpload, setIsFileUpload] = useState(false)
@@ -52,7 +63,9 @@ const EmployeeForm = () => {
 
     let [slackCheckBoxFlag, twitterCheckBoxFlag, teamsCheckBoxFlag] = [false, false, false]
 
-
+    const checkboxChange = key => event => {
+        setCheckboxStates({ ...checkboxStates, [key]: event.target.checked });
+    };
     // const getAuthDBFlags = async () => {
     //     try {
     //         const {data} = await fetchAuthDBFlags()
