@@ -71,7 +71,9 @@ export default ({control}) => {
                             <div key={'' + Math.random()} className={'d-inline'}>
                                 <section className={'d-inline'}>
                                     <Controller
+                                        as={Checkbox}
                                         name={label}
+                                        type="checkbox"
                                         control={control}
                                         render={({field}) => (
                                             <Checkbox key={'' + Math.random()}

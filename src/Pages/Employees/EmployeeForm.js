@@ -1,70 +1,51 @@
-import React, {useCallback, useContext, useEffect, useReducer, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import classes from '../StyleSheets/AnnouncementPage.module.css'
-import greenImg from 'D://Surya//Software LEarning//loginners//src//UI//images//green.jpeg';
 import PersonIcon from '@mui/icons-material/Person';
 import MessageIcon from '@mui/icons-material/Message';
-import {
-    Grid,
-    Paper,
-    Card,
-} from '@material-ui/core'
-
-
+import {Grid, Paper, Card} from '@material-ui/core'
 import {makeStyles} from '@material-ui/styles';
-import {useForm, Controller, FormProvider, useFormContext} from 'react-hook-form'
+import {useForm, Controller, FormProvider} from 'react-hook-form'
 import ChooseBotsPublish from './ChooseBotsPublish'
 import DatePickerFunc from "../Employees/DatepickerFunc";
 import {StoreContext} from '../../contexts/MobxStoreContext';
 import GridUtilFormCommon from "../utils/GridUtilFormCommon";
 import {yupResolver} from "@hookform/resolvers/yup";
-
-import * as yup from 'yup'
 import {Input} from "../utils/Input";
 import IconAdornmentField from "../utils/IconAdornmentField";
 import {PrimaryButton} from "../utils/PrimaryButton";
 import {useObserver} from "mobx-react";
 import {FileUploader} from '../utils/FileUploader'
 import {useHistory} from "react-router-dom";
-
 import axios from 'axios'
-import {autorun} from "mobx";
+import {capitalizeFirstLetter} from '../utils/CommonFunctions'
+//component import
+import formSchemaBase from "../YupSchemas/FormSchemaBase";
+import UserName from "../../components/AnnounceForm/UserName";
+import Message from "../../components/AnnounceForm/Message";
 
 const url = 'http://localhost:4000/authFlags'
 const fetchAuthDBFlags = () => axios.get(url)
 
 
-const schema = yup.object().shape({
-    userName:
-        yup.string().matches(/^([^0-9]*)$/, "User Name should not contain numbers")
-            .required("Please enter your User Name"),
-    message:
-        yup.string().required("Please enter your message"),
-    item_ids: yup.array()
-        .transform(ids => {
-            return ids.filter(id => {
-                return id === 0 || id;
-            });
-        })
-        .min(1, "Please choose atleast one platform for the message to be broadcasted")
-})
+//constants
+const BROADCAST_RIGHTNOW = "BroadCast right now"
+
+//constants for useForm Hook
+const MESSAGE = "message"
+
+const schema = formSchemaBase()
 
 const EmployeeForm = () => {
+
+
     const store = useContext(StoreContext)
     const [isFileUpload, setIsFileUpload] = useState(false)
-
-
     const history = useHistory()
-
-
-    console.log(`bugs = ${store.bugs} and message = ${store.message}`)
     const methods = useForm({
         mode: "onBlur",
         resolver: yupResolver(schema)
     })
-
-    const {control, register, formState: {errors}, getValues} = methods;
-
-
+    const {control, register, formState: {errors}} = methods;
     const useStyle = makeStyles(theme => (
         {
             field: {
@@ -81,16 +62,9 @@ const EmployeeForm = () => {
             scheduler: {
                 display: 'block'
             }
-
         }
     ))
-
-
     const stylers = useStyle()
-
-    const {userName, message} = store
-
-    console.log(`userName = ${userName} and message = ${message}`)
 
     return useObserver(() =>
         <Grid container
@@ -98,11 +72,9 @@ const EmployeeForm = () => {
               alignContent={'center'}
               justifyContent={'center'}
         >
-
             <GridUtilFormCommon>
                 <Card className={`${classes.announcePageImage}`}/>
             </GridUtilFormCommon>
-
 
             <GridUtilFormCommon>
                 <Paper
@@ -111,19 +83,11 @@ const EmployeeForm = () => {
                     elevation={24}
                 >
                     <FormProvider {...methods}>
-                        <form className={`${stylers.alignItemsAndJustifyContent}`} noValidate autoComplete={'off'}
+                        <form noValidate autoComplete={'off'}
                               onSubmit={methods.handleSubmit((data) => {
+                                  let {Scheduler, Slack, Twitter, Teams, date_schedule, files} = data
 
-                                  let {
-                                      Scheduler,
-                                      Slack,
-                                      Twitter,
-                                      Teams,
-                                      date_schedule,
-                                      files
-                                  } = data
-
-                                  if (Scheduler === "BroadCast right now") {
+                                  if (Scheduler === BROADCAST_RIGHTNOW) {
                                       date_schedule = new Date()
                                   }
 
@@ -168,52 +132,8 @@ const EmployeeForm = () => {
                                   }
                                   history.push('/confirm')
                               })}>
-                            <Controller
-                                control={control}
-                                name="userName"
-                                render={({field}) => {
-                                    return (
-                                        <Input
-                                            label={'User Name'}
-                                            InputProps={{
-                                                startAdornment: (
-                                                    <IconAdornmentField>
-                                                        <PersonIcon/>
-                                                    </IconAdornmentField>
-                                                )
-                                            }}
-                                            {...register("userName")}
-                                            error={!!errors.userName}
-                                            helperText={errors?.userName?.message}
-                                            onChange={e => store.userName = e.target.value}
-                                        />
-                                    )
-                                }}
-                            />
-
-                            <Controller
-                                control={control}
-                                name="message"
-                                render={({field}) => {
-                                    return <Input
-                                        label={'Message'}
-                                        multiline
-                                        rows={4}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <IconAdornmentField>
-                                                    <MessageIcon/>
-                                                </IconAdornmentField>
-                                            )
-                                        }}
-                                        {...register("message")}
-                                        error={!!errors.message}
-                                        helperText={errors?.message?.message}
-                                        onChange={e => store.message = e.target.value
-                                        }
-                                    />
-                                }}
-                            />
+                            <UserName/>
+                            <Message message={MESSAGE}/>
                             <FileUploader name="files" control={control}/>
 
                             {/* Date Picker */}

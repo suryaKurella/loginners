@@ -4,7 +4,8 @@
 
     position: relative;
     background-image: url('../../UI/images/announcePage.png');
-    height: 80vh;
+    /*height: 80vh;*/
+    height: 80%;
     width: 100%;
     background-size: cover;
     border-radius: 1rem !important;
