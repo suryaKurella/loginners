@@ -1,10 +1,11 @@
 import React from "react";
-import {useLocalStore} from "mobx-react";
+import {useLocalObservable, useLocalStore} from "mobx-react";
 
 export const StoreContext = React.createContext();
 
 const StoreProvider = ({children}) => {
-    const store = useLocalStore(() => ({
+    // const store = useLocalStore(() => ({
+    const store = useLocalObservable(() => ({
 
         message: '',
         userName: '',

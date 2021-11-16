@@ -18,12 +18,12 @@ const DatePickerFunc = () => {
     const store = React.useContext(StoreContext);
 
     return useObserver(() =>
-        <form>
+        <>
             <FormControl className={`mt-2 pb-3`} component="fieldset">
                 <FormLabel component="legend">Schedule Your Broadcast</FormLabel>
                 <Controller
                     render={({field}) => {
-                        const {name, onBlur, onChange, value} = field;
+                        const {onChange} = field;
                         return (
                             <RadioGroup aria-label="scheduler" {...field}
 
@@ -49,35 +49,36 @@ const DatePickerFunc = () => {
                             </RadioGroup>
                         )
                     }}
-                    name="Scheduler"
+                    name="scheduler"
                     control={control}
                 />
             </FormControl>
 
-            {store.isScheduleLater ?
-                <div>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <Controller
-                            render={({
-                                         field: {onChange, onBlur, value, name, ref},
-                                     }) => (
-                                <KeyboardDateTimePicker
-                                    minDate={new Date()}
-                                    margin={"normal"}
-                                    label={"Select Date & Time"}
-                                    value={value}
-                                    onChange={onChange}
-                                />
-                            )}
-                            name={'date_schedule'}
-                            defaultValue={null}
-                            control={control}
-                        />
-                    </MuiPickersUtilsProvider>
-                </div>
-                : ""}
-        </form>
+            {store.isScheduleLater &&
+            <div>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Controller
+                        render={({
+                                     field: {onChange, onBlur, value, name, ref},
+                                 }) => (
+                            <KeyboardDateTimePicker
+                                minDate={new Date()}
+                                margin={"normal"}
+                                label={"Select Date & Time"}
+                                value={value}
+                                onChange={onChange}
+                            />
+                        )}
+                        name={'dateSchedule'}
+                        defaultValue={null}
+                        control={control}
+                    />
+                </MuiPickersUtilsProvider>
+            </div>
+            }
+        </>
     )
-};
+}
+;
 
 export default DatePickerFunc;

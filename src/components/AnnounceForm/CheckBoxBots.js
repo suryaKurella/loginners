@@ -2,14 +2,13 @@ import React, {memo} from "react";
 import {Controller} from "react-hook-form";
 import {Checkbox, FormLabel} from "@material-ui/core";
 import formJson from "./Files/formJson";
+import {capitalizeFirstLetter} from "../../Pages/utils/CommonFunctions";
 
 const formValues = formJson()
 
 const CheckBoxBots = memo(
     ({register, formState: {isDirty}, control}) => (
         <div component="fieldset" className={'d-block mt-3 pb-3'} id={'checkBoxComponent'}>
-
-
             <FormLabel component="legend">Please Choose the platform you want the message to be
                 broadcasted</FormLabel>
             {
@@ -19,7 +18,6 @@ const CheckBoxBots = memo(
                         <div key={'' + Math.random()} className={'d-inline'}>
                             <section className={'d-inline'}>
                                 <Controller
-                                    as={Checkbox}
                                     name={label}
                                     type="checkbox"
                                     control={control}
@@ -30,12 +28,13 @@ const CheckBoxBots = memo(
                                         />
                                     )}
                                 />
-                                <label>{label}</label>
+                                <label>{capitalizeFirstLetter(label)}</label>
                             </section>
                         </div>
                     )
                 })
             }
+
         </div>
     ),
     (prevProps, nextProps) =>

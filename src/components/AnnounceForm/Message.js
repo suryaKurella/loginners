@@ -9,7 +9,6 @@ import {StoreContext} from "../../contexts/MobxStoreContext";
 const Message = ({message}) => {
 
     const {control, register, formState: {errors}} = useFormContext();
-    const store = useContext(StoreContext)
 
 
     return (
@@ -31,8 +30,6 @@ const Message = ({message}) => {
                     {...register(message)}
                     error={!!errors.message}
                     helperText={errors?.message?.message}
-                    onChange={e => store.message = e.target.value
-                    }
                 />
             }}
         />

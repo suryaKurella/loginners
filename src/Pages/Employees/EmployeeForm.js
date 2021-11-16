@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import classes from '../StyleSheets/AnnouncementPage.module.css'
 import {Grid, Paper, Card} from '@material-ui/core'
-import {makeStyles} from '@material-ui/styles';
 import {useForm, FormProvider} from 'react-hook-form'
 import DatePickerFunc from "../Employees/DatepickerFunc";
 import {StoreContext} from '../../contexts/MobxStoreContext';
@@ -12,7 +11,6 @@ import {useObserver} from "mobx-react";
 import {FileUploader} from '../utils/FileUploader'
 import {useHistory} from "react-router-dom";
 import axios from 'axios'
-import {capitalizeFirstLetter} from '../utils/CommonFunctions'
 //component import
 import formSchemaBase from "../YupSchemas/FormSchemaBase";
 import UserName from "../../components/AnnounceForm/UserName";
@@ -33,7 +31,6 @@ const MESSAGE = "message"
 const schema = formSchemaBase()
 
 const EmployeeForm = () => {
-
 
     const store = useContext(StoreContext)
     const history = useHistory()
@@ -62,17 +59,19 @@ const EmployeeForm = () => {
                     <FormProvider {...methods}>
                         <form noValidate autoComplete={'off'}
                               onSubmit={methods.handleSubmit((data) => {
-                                  let {Scheduler, Slack, Twitter, Teams, date_schedule, files} = data
-                                  if (Scheduler === BROADCAST_RIGHTNOW) {
-                                      date_schedule = new Date()
+                                  let {userName, message, scheduler, slack, twitter, teams, dateSchedule, files} = data
+                                  if (scheduler === BROADCAST_RIGHTNOW) {
+                                      dateSchedule = new Date()
                                   }
-                                  store.scheduler = Scheduler
-                                  store.isScheduleLater = Scheduler !== "BroadCast right now"
-                                  store.isSlackCheckBoxFlag = [true, false].includes(Slack) ? Slack : false
-                                  store.isTwitterCheckBoxFlag = [true, false].includes(Twitter) ? Twitter : false
-                                  store.isTeamsCheckBoxFlag = [true, false].includes(Teams) ? Teams : false
+                                  store.userName = userName
+                                  store.message = message
+                                  store.scheduler = scheduler
+                                  store.isScheduleLater = scheduler !== BROADCAST_RIGHTNOW
+                                  store.isSlackCheckBoxFlag = [true, false].includes(slack) ? slack : false
+                                  store.isTwitterCheckBoxFlag = [true, false].includes(twitter) ? twitter : false
+                                  store.isTeamsCheckBoxFlag = [true, false].includes(teams) ? teams : false
                                   store.mediaFile = files
-                                  store.dateSchedule = date_schedule
+                                  store.dateSchedule = dateSchedule
                                   console.log(data)
                                   history.push('/confirm')
                               })}>

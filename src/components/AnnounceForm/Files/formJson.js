@@ -2,9 +2,9 @@ import React from 'react';
 
 const formJson = () => {
 
-    const SLACK_LABEL = "Slack"
-    const TWITTER_LABEL = "Twitter"
-    const TEAMS_LABEL = "Teams"
+    const SLACK_LABEL = "slack"
+    const TWITTER_LABEL = "twitter"
+    const TEAMS_LABEL = "teams"
 
 
     return (
