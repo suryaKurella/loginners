@@ -6,12 +6,14 @@ import {
 import {
     MuiPickersUtilsProvider, KeyboardDateTimePicker,
 } from '@material-ui/pickers';
-import {Controller} from 'react-hook-form'
+import {Controller, useFormContext} from 'react-hook-form'
 import DateFnsUtils from '@date-io/date-fns';
 import {StoreContext} from '../../contexts/MobxStoreContext';
 import {useObserver} from "mobx-react";
 
-const DatePickerFunc = ({control}) => {
+const DatePickerFunc = () => {
+
+    const {control} = useFormContext();
 
     const store = React.useContext(StoreContext);
 
