@@ -1,10 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Input} from "../../Pages/utils/Input";
 import {capitalizeFirstLetter} from "../../Pages/utils/CommonFunctions";
 import IconAdornmentField from "../../Pages/utils/IconAdornmentField";
 import MessageIcon from "@mui/icons-material/Message";
 import {Controller, useFormContext} from "react-hook-form";
-import {StoreContext} from "../../contexts/MobxStoreContext";
 
 const Message = ({message}) => {
 

@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, {memo, useMemo} from "react";
 import {Controller} from "react-hook-form";
 import {Checkbox, FormLabel} from "@material-ui/core";
 import formJson from "./Files/formJson";
@@ -14,27 +14,28 @@ const CheckBoxBots = memo(
             {
                 Object.entries(formValues).map(entry => {
                     const {label} = entry[1]
-                    return (
-                        <div key={'' + Math.random()} className={'d-inline'}>
-                            <section className={'d-inline'}>
-                                <Controller
-                                    name={label}
-                                    type="checkbox"
-                                    control={control}
-                                    render={({field}) => (
-                                        <Checkbox key={'' + Math.random()}
-                                                  onChange={(e) => field.onChange(e.target.checked)}
-                                                  checked={field.value}
-                                        />
-                                    )}
-                                />
-                                <label>{capitalizeFirstLetter(label)}</label>
-                            </section>
-                        </div>
+                    return useMemo(() => {
+                            return <div key={'' + Math.random()} className={'d-inline'}>
+                                <section className={'d-inline'}>
+                                    <Controller
+                                        as={<Checkbox/>}
+                                        name={label}
+                                        type="checkbox"
+                                        control={control}
+                                        render={({field}) => (
+                                            <Checkbox
+                                                onChange={(e) => field.onChange(e.target.checked)}
+                                                checked={field.value}
+                                            />
+                                        )}
+                                    />
+                                    <label>{capitalizeFirstLetter(label)}</label>
+                                </section>
+                            </div>
+                        }, [{label}]
                     )
                 })
             }
-
         </div>
     ),
     (prevProps, nextProps) =>

@@ -19,10 +19,6 @@ const StoreProvider = ({children}) => {
         scheduler: '',
         mediaFile: [],
         dateSchedule: new Date(),
-
-        setMessageStore: (messageText) => {
-            this.message = messageText
-        }
     }));
 
     return (
