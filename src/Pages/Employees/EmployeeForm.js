@@ -40,6 +40,9 @@ const EmployeeForm = () => {
     })
     const {control, register, formState: {errors}} = methods;
 
+
+    console.log("Errors:", errors);
+
     return useObserver(() =>
         <Grid container
               direction={'row'}
@@ -58,7 +61,14 @@ const EmployeeForm = () => {
                 >
                     <FormProvider {...methods}>
                         <form noValidate autoComplete={'off'}
+
                               onSubmit={methods.handleSubmit((data) => {
+
+
+
+                                  console.log("Erroroso asj fsf = ")
+                                  console.log(errors)
+
                                   let {userName, message, scheduler, slack, twitter, teams, dateSchedule, files} = data
                                   if (scheduler === BROADCAST_RIGHTNOW) {
                                       dateSchedule = new Date()
@@ -72,6 +82,32 @@ const EmployeeForm = () => {
                                   store.isTeamsCheckBoxFlag = [true, false].includes(teams) ? teams : false
                                   store.mediaFile = files
                                   store.dateSchedule = dateSchedule
+
+                                  // function validateMedium() {
+                                  //     var mediumCheckboxes = document.querySelectorAll('input[type=checkbox]');
+                                  //
+                                  //     console.log("medium =m ")
+                                  //     console.log(mediumCheckboxes)
+                                  //
+                                  //
+                                  //     var okay = false;
+                                  //
+                                  //     for (var i = 0, len = mediumCheckboxes.length; i < len; i++) {
+                                  //         if (mediumCheckboxes[i].checked) {
+                                  //             okay = true;
+                                  //             break;
+                                  //         }
+                                  //     }
+                                  //
+                                  //     if (okay) {
+                                  //         alert("Thank you");
+                                  //     } else {
+                                  //         alert("Please check at least one medium.");
+                                  //     }
+                                  // }
+                                  //
+                                  // validateMedium()
+
                                   console.log(data)
                                   history.push('/confirm')
                               })}>
