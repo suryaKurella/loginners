@@ -7,7 +7,10 @@ import Login from "./Login";
 import Employees from "../Pages/Employees/Employees";
 import ConfirmPage from './ConfirmPage'
 import AppBar from "../Pages/utils/AppBar";
+import PrivateRoute from "./PrivateRoute";
+import Navbar from "./Navbar";
 const SignUpSignIn = () => {
+
 
     const [oldUser, setOldUser] = useState(false)
     return (
@@ -23,10 +26,12 @@ const SignUpSignIn = () => {
             <div className={'w-100'}>
 
                 <Router>
-                    <AppBar/>
+
                     <AuthProvider>
+                        <AppBar/>
+                        {/*<Navbar/>*/}
                         <Switch>
-                            <Route  exact path={'/'} component={Signup}/>
+                            <PrivateRoute  exact path={'/'} component={Signup}/>
 
 
                             <Route path={'/signup'} component={Signup}/>
@@ -35,9 +40,8 @@ const SignUpSignIn = () => {
                             {/*<Container className={'w-100 '} style={{maxWidth: '400px'}}>*/}
                             {/*    <Route path={'/login'} component={Login}/>*/}
                             {/*</Container>*/}
-
-                            <Route path={'/announceform'} component={Employees}/>
-                            <Route path={'/confirm'} component={ConfirmPage}/>
+                            <PrivateRoute path={'/announceform'} component={Employees}/>
+                            <PrivateRoute path={'/confirm'} component={ConfirmPage}/>
 
                         </Switch>
                     </AuthProvider>

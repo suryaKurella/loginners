@@ -17,6 +17,9 @@ import UserName from "../../components/AnnounceForm/UserName";
 import Message from "../../components/AnnounceForm/Message";
 import LogoBots from "../../components/AnnounceForm/LogoBots";
 import CheckBoxBots from "../../components/AnnounceForm/CheckBoxBots";
+import {Button} from "react-bootstrap";
+import {useAuth} from "../../contexts/AuthContext";
+
 
 const url = 'http://localhost:4000/authFlags'
 const fetchAuthDBFlags = () => axios.get(url)
@@ -31,6 +34,10 @@ const MESSAGE = "message"
 const schema = formSchemaBase()
 
 const EmployeeForm = () => {
+    const {currentUser} = useAuth()
+
+    console.log("Yover = ")
+    console.log(currentUser.displayName)
 
     const store = useContext(StoreContext)
     const history = useHistory()
@@ -128,6 +135,9 @@ const EmployeeForm = () => {
                             <PrimaryButton type={'submit'}>
                                 Review
                             </PrimaryButton>
+
+
+
                         </form>
                     </FormProvider>
                 </Paper>

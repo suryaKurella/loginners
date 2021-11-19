@@ -17,6 +17,7 @@ const Signup = () => {
 
     const emailRef = useRef()
     const passwordRef = useRef()
+    const userNameRef = useRef()
     const passwordConfirmRef = useRef()
     const {signup} = useAuth()
 
@@ -26,7 +27,6 @@ const Signup = () => {
     const history = useHistory()
 
     const [isOldUser, setIsOldUser] = useState(false)
-
 
 
     const handleSubmit = async (e) => {
@@ -42,18 +42,14 @@ const Signup = () => {
         try {
             setError('')
             setLoading(true)
-            await signup(emailRef.current.value, passwordRef.current.value)
+            await signup(emailRef.current.value, passwordRef.current.value, userNameRef.current.value)
             setSignInSuccess("Registration Successful! Please move to Sign in Page")
-
             history.push('/')
         } catch (e) {
             // setError("Failed to create an Account")
             setError("User Already Exists! Please Sign in")
         }
-
         setLoading(false)
-
-
     }
 
 
@@ -80,6 +76,7 @@ const Signup = () => {
         setIsOldUser(isSignUpClick)
 
     }
+
 
 
     return (
@@ -119,6 +116,15 @@ const Signup = () => {
                                 {error && <Alert variant={'danger'}>{error}</Alert>}
                                 {signInSuccess && <Alert variant={'success'}>{signInSuccess}</Alert>}
                                 <Form onSubmit={handleSubmit}>
+                                    <Form.Group id={'username'} className={'ml-5 mr-5'}>
+                                        <Form.Label className={'text-white'}>User Name</Form.Label>
+                                        <Form.Control
+                                            className={'boomer border border-top-0 border-left-0 border-right-0'}
+                                            placeholder={'Display Name'} autoComplete="new-password"
+                                            type={'text'} ref={userNameRef} required/>
+                                    </Form.Group>
+
+
                                     <Form.Group id={'email'} className={'ml-5 mr-5'}>
                                         <Form.Label className={'text-white'}>Email</Form.Label>
 
@@ -128,6 +134,9 @@ const Signup = () => {
                                             placeholder={'Email Address'} autoComplete="new-password"
                                             type={'email'} ref={emailRef} required/>
                                     </Form.Group>
+
+
+
                                     <Form.Group id={'password'} className={'ml-5 mr-5'}>
                                         <Form.Label className={'text-white'}>Password</Form.Label>
                                         <Form.Control
