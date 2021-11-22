@@ -33,17 +33,11 @@ const CheckBoxBots = memo(
                                         checked={field.value || false}
                                         // inputRef={...register({ validate: v => v.length > 0 })}
                                     />}
-                                    // rules={{validate: v => v && v.length>0}}
-                                    // rules={{ required: true }}
-                                    // rules={{
-                                    //     validate: v => v.length>0
-                                    // }}
                                     error={!!(errors.twitter || errors.teams || errors.slack)}
                                     helperText={errors?.twitter?.message}
 
 
                                 />
-                                {/*{errors.Twitter && <p>{"Omg Very Bad Please fill in "}</p>}*/}
                                 <label htmlFor={label}>{capitalizeFirstLetter(label)}</label>
                             </section>
                         </div>

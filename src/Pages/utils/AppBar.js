@@ -5,6 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {Col, Container, Row} from 'react-bootstrap'
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Button from "@material-ui/core/Button";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -14,7 +16,10 @@ import {useHistory} from "react-router-dom";
 import {useAuth} from "../../contexts/AuthContext";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { FaBeer } from 'react-icons/fa';
+import SpeakerPhoneIcon from '@mui/icons-material/SpeakerPhone';
+import InfoIcon from '@mui/icons-material/Info';
+import {FaBeer} from 'react-icons/fa';
+
 export default function AppBarr() {
 
     const history = useHistory()
@@ -58,50 +63,50 @@ export default function AppBarr() {
                     </div>
 
 
-                    <Tabs
-
-                    >
-                        <FaBeer/><Tab value="About" label="About"/>
-
-                        <Tab value="announcePage" label="Broadcast"/>
+                    {/*<Tabs*/}
+                    {/*    fullWidth={true}*/}
 
 
-                    {/*<Button variant="h6" color="inherit" component="div"*/}
-                    {/*        style={{backgroundColor: 'green'}}*/}
                     {/*>*/}
-                    {/*    About*/}
-                    {/*</Button>*/}
+                    {
+                        currentUser &&
+                        <Container className={'text-center'}>
+                            <Row>
+                                <Col sm ={4} md={3}>
+                                    <Tab icon=<InfoIcon/> value="About" label="About"/>
+                                </Col>
+
+                                <Col sm ={4} md={3}>
+                                    <Tab icon=<SpeakerPhoneIcon/> value="announcePage" label="Broadcast"/>
+                                </Col>
+
+                                <Col sm ={4} md={6}>
 
 
-                        {currentUser &&
+                                        <Tab
+                                            icon={<LogoutIcon/>}
+                                            value="Logout"
+                                            label="Logout"
+                                            onClick={async () => {
 
-                        <div>
-                            <IconButton
+                                                try {
+                                                    await logout();
+                                                    history.push("/signup")
 
-                                edge="start" color="inherit" aria-label="menu" sx={{mr: 2}}>
-                                <LogoutIcon/>
-                                {/*<AccountCircleIcon/>*/}
-                            </IconButton>
+                                                } catch (err) {
+                                                    console.error(err)
+                                                }
 
-                            <Button variant={'outlined'}
-                                    className={'text-white bg bg-danger text-center'}
-                                    type={'button'}
+                                            }}
+                                        />
 
-                                    onClick={async () => {
 
-                                        try {
-                                            await logout();
-                                            history.push("/signup")
 
-                                        } catch (err) {
-                                            console.error(err)
-                                        }
-
-                                    }}>Logout
-                            </Button>
-                        </div>
-                        }
-                    </Tabs>
+                                </Col>
+                            </Row>
+                        </Container>
+                    }
+                    {/*</Tabs>*/}
                 </Toolbar>
             </AppBar>
         </Box>
