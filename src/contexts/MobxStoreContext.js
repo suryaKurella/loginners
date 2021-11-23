@@ -7,12 +7,12 @@ const StoreProvider = ({children}) => {
     // const store = useLocalStore(() => ({
     const store = useLocalObservable(() => ({
 
-        message: '',
         userName: '',
+        message: '',
         isScheduleLater: false,
-        isTwitterAuthLocalMobXFlag: false,
-        isSlackAuthLocalMobXFlag: false,
-        isTeamsAuthLocalMobXFlag: false,
+        // isTwitterAuthLocalMobXFlag: false,
+        // isSlackAuthLocalMobXFlag: false,
+        // isTeamsAuthLocalMobXFlag: false,
         isTwitterCheckBoxFlag: false,
         isSlackCheckBoxFlag: false,
         isTeamsCheckBoxFlag: false,

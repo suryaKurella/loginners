@@ -56,13 +56,20 @@ const EmployeeForm = () => {
               alignContent={'center'}
               justifyContent={'center'}
         >
-            <GridUtilFormCommon>
+            <GridUtilFormCommon
+
+            >
+
                 <Card className={`${classes.announcePageImage}`}/>
             </GridUtilFormCommon>
 
-            <GridUtilFormCommon>
+            <GridUtilFormCommon
+                alignContent={'center'}
+
+            >
+
                 <Paper
-                    className={`p-4 ${classes['card-announce']}`}
+                    className={`p-4 m-4 ${classes['card-announce']}`}
                     variant={'elevation'}
                     elevation={24}
                 >
@@ -76,11 +83,13 @@ const EmployeeForm = () => {
                                   console.log("Erroroso asj fsf = ")
                                   console.log(errors)
 
-                                  let {userName, message, scheduler, slack, twitter, teams, dateSchedule, files} = data
+                                  // let {userName, message, scheduler, slack, twitter, teams, dateSchedule, files} = data
+                                  let { message, scheduler, slack, twitter, teams, dateSchedule, files} = data
                                   if (scheduler === BROADCAST_RIGHTNOW) {
                                       dateSchedule = new Date()
                                   }
-                                  store.userName = userName
+                                  // store.userName = userName
+                                  store.userName = currentUser.displayName
                                   store.message = message
                                   store.scheduler = scheduler
                                   store.isScheduleLater = scheduler !== BROADCAST_RIGHTNOW
@@ -90,30 +99,6 @@ const EmployeeForm = () => {
                                   store.mediaFile = files
                                   store.dateSchedule = dateSchedule
 
-                                  // function validateMedium() {
-                                  //     var mediumCheckboxes = document.querySelectorAll('input[type=checkbox]');
-                                  //
-                                  //     console.log("medium =m ")
-                                  //     console.log(mediumCheckboxes)
-                                  //
-                                  //
-                                  //     var okay = false;
-                                  //
-                                  //     for (var i = 0, len = mediumCheckboxes.length; i < len; i++) {
-                                  //         if (mediumCheckboxes[i].checked) {
-                                  //             okay = true;
-                                  //             break;
-                                  //         }
-                                  //     }
-                                  //
-                                  //     if (okay) {
-                                  //         alert("Thank you");
-                                  //     } else {
-                                  //         alert("Please check at least one medium.");
-                                  //     }
-                                  // }
-                                  //
-                                  // validateMedium()
 
                                   console.log(data)
                                   history.push('/confirm')

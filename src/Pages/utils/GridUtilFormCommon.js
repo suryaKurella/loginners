@@ -7,9 +7,9 @@ const GridUtilFormCommon = ({children, ...props}) => {
         <Grid
             container
             direction={'row'}
-            alignContent={'center'}
+            // alignContent={'center'}
             justifyContent={'center'}
-            item md={6} xs={6} sm={6}
+            item md={6} xs={6} sm={12}
             {...props}
         >
             {children}

@@ -43,6 +43,7 @@ const Signup = () => {
             setError('')
             setLoading(true)
             await signup(emailRef.current.value, passwordRef.current.value, userNameRef.current.value)
+            console.log("Setting up the user registration")
             setSignInSuccess("Registration Successful! Please move to Sign in Page")
             history.push('/')
         } catch (e) {
@@ -78,7 +79,6 @@ const Signup = () => {
     }
 
 
-
     return (
         <div className={'align-items-center justify-content-center'}>
             {/*<AppBar/>*/}
@@ -88,7 +88,7 @@ const Signup = () => {
                 <Col className={`gap-padding`}>
 
 
-                    <Card className={`${cardClasses.card} ml-0`}>
+                    <Card className={`${cardClasses.card} ml-0 border-0`}>
                         <div className={'announcement text-white'}>
                             <FrontPageContent/>
                         </div>
@@ -99,7 +99,7 @@ const Signup = () => {
                 <Col xs lg="5" className={`gap-padding`}>
 
 
-                    <Card className={`${classes.cardFrontPage} vertical-full`}>
+                    <Card className={`${classes.cardFrontPage} vertical-full border-0`}>
                         {!isOldUser ?
                             < Card.Body>
                                 {/*<h2 className={'text-center mb-4 text-white'}>Sign up</h2>*/}
@@ -114,6 +114,7 @@ const Signup = () => {
 
                                 </h2>
                                 {error && <Alert variant={'danger'}>{error}</Alert>}
+                                {console.log(`signInSuccess = ${signInSuccess}`)}
                                 {signInSuccess && <Alert variant={'success'}>{signInSuccess}</Alert>}
                                 <Form onSubmit={handleSubmit}>
                                     <Form.Group id={'username'} className={'ml-5 mr-5'}>
@@ -134,7 +135,6 @@ const Signup = () => {
                                             placeholder={'Email Address'} autoComplete="new-password"
                                             type={'email'} ref={emailRef} required/>
                                     </Form.Group>
-
 
 
                                     <Form.Group id={'password'} className={'ml-5 mr-5'}>

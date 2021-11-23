@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Col, Container, Row} from 'react-bootstrap'
-
+import CachedIcon from '@mui/icons-material/Cached';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Button from "@material-ui/core/Button";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -19,7 +19,7 @@ import Tab from "@mui/material/Tab";
 import SpeakerPhoneIcon from '@mui/icons-material/SpeakerPhone';
 import InfoIcon from '@mui/icons-material/Info';
 import {FaBeer} from 'react-icons/fa';
-
+import glasses from '../StyleSheets/AppBar.module.css'
 export default function AppBarr() {
 
     const history = useHistory()
@@ -70,36 +70,37 @@ export default function AppBarr() {
                     {/*>*/}
                     {
                         currentUser &&
-                        <Container className={'text-center'}>
+                        <Container className={`text-center}`}>
                             <Row>
-                                <Col sm ={4} md={3}>
-                                    <Tab icon=<InfoIcon/> value="About" label="About"/>
+                                <Col>
+                                    <Tab className={`${glasses['opacity-5']} `} icon=<InfoIcon/> value="About" label="About"/>
                                 </Col>
 
-                                <Col sm ={4} md={3}>
-                                    <Tab icon=<SpeakerPhoneIcon/> value="announcePage" label="Broadcast"/>
+                                <Col>
+                                    <Tab onClick={()=>history.push('/announceform')} className={`${glasses['opacity-5']}`} icon=<SpeakerPhoneIcon/> value="Broadcast" label="Broadcast" />
+                                </Col>
+                                <Col>
+                                    <Tab className={`${glasses['opacity-5']}`} icon=<CachedIcon/> value="Announcements" label="Announcements"/>
                                 </Col>
 
-                                <Col sm ={4} md={6}>
+                                <Col>
+                                    <Tab
+                                        className={`${glasses['opacity-5']} text-white bg bg-danger pr-5 pl-5`}
+                                        icon={<LogoutIcon/>}
+                                        value="Logout"
+                                        label="Logout"
+                                        onClick={async () => {
 
+                                            try {
+                                                await logout();
+                                                history.push("/signup")
 
-                                        <Tab
-                                            icon={<LogoutIcon/>}
-                                            value="Logout"
-                                            label="Logout"
-                                            onClick={async () => {
+                                            } catch (err) {
+                                                console.error(err)
+                                            }
 
-                                                try {
-                                                    await logout();
-                                                    history.push("/signup")
-
-                                                } catch (err) {
-                                                    console.error(err)
-                                                }
-
-                                            }}
-                                        />
-
+                                        }}
+                                    />
 
 
                                 </Col>

@@ -43,123 +43,136 @@ const ConfirmPage = () => {
     const styles = useStyles();
 
     const entries = Object.entries(store).filter((entry) => entry[0] !== "mediaFile");
+    const uiEntries = Object.entries(store).filter((entry) => {
+        return entry[0] !== 'mediaFile' && entry[0] !== 'isScheduleLater'
+    })
 
-    const handleField = (entryField) => {
 
-        if (entryField === "isTwitterCheckBoxFlag") {
-            entryField = "Post to Twitter"
-        } else if (entryField === "isSlackCheckBoxFlag") {
-            entryField = "Post to Slack"
-        } else if (entryField === "isTeamsCheckBoxFlag") {
-            entryField = "Post to Teams"
-        }
-        return entryField.charAt(0).toUpperCase() + entryField.slice(1);
 
+
+// entry[0] !== "mediaFile");
+
+
+const handleField = (entryField) => {
+
+    if (entryField === "isTwitterCheckBoxFlag") {
+        entryField = "Post to Twitter"
+    } else if (entryField === "isSlackCheckBoxFlag") {
+        entryField = "Post to Slack"
+    } else if (entryField === "isTeamsCheckBoxFlag") {
+        entryField = "Post to Teams"
     }
 
-    const onSubmit = async () => {
-        const formData = new FormData();
-        if (store.mediaFile) {
-            store.mediaFile.forEach((file) => {
-                formData.append("files", file, file.name);
-            });
-        }
-        formData.append('email', currentUser.email)
-        entries.forEach((entry) => {
-            formData.append(entry[0], entry[1]);
+    return entryField.charAt(0).toUpperCase() + entryField.slice(1);
+
+}
+
+const onSubmit = async () => {
+    const formData = new FormData();
+    if (store.mediaFile) {
+        store.mediaFile.forEach((file) => {
+            formData.append("files", file, file.name);
         });
-
-        const res = await fetch("http://localhost:4000/", {
-            method: "POST",
-            body: formData,
-        });
-
-        if (res.status === 200) {
-            await Swal.fire("Great job!", "Your message is posted", "success");
-            setSuccess(true);
-        }
-    };
-
-    if (success) {
-
-        return (
-            <div>
-                <h2>Congrats your messages have been succesfully posted {"\u2728"}</h2>
-                <div className={classes.giffer}/>
-                <Confetti/>;
-            </div>
-        )
-
-
     }
+    formData.append('email', currentUser.email)
+    entries.forEach((entry) => {
+        formData.append(entry[0], entry[1]);
+    });
+
+    const res = await fetch("http://localhost:4000/", {
+        method: "POST",
+        body: formData,
+    });
+
+    if (res.status === 200) {
+        await Swal.fire("Great job!", "Your message is posted", "success");
+        setSuccess(true);
+    }
+};
+
+if (success) {
 
     return (
-        <>
-            <WrapContainer className={`${classes.card} p-5 text-center`}>
-                <Typography component="h2" variant="h5">
-                    📋 Form Values
-                </Typography>
+        <div>
+            <h2>Congrats your messages have been succesfully posted {"\u2728"}</h2>
+            <div className={classes.giffer}/>
+            <Confetti/>;
+        </div>
+    )
 
-                <TableContainer className={styles.root} component={Paper}>
-                    <Table className={styles.table} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Field</TableCell>
-                                <TableCell align="center">Value</TableCell>
+
+}
+
+return (
+    <>
+        <WrapContainer className={`${classes.card} p-5 text-center`}>
+            <Typography component="h2" variant="h5">
+                📋 Form Values
+            </Typography>
+
+            <TableContainer className={styles.root} component={Paper}>
+                <Table className={styles.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Field</TableCell>
+                            <TableCell align="center">Value</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+
+
+                        {uiEntries.map((entry) => (
+                            <TableRow key={entry[0]}>
+                                <TableCell className="text-left" component="th" scope="row">
+                                    {
+                                        handleField(entry[0])
+                                    }
+                                </TableCell>
+                                <TableCell align="center">
+                                    {
+                                        // [true, false].includes(entry[1]) ? ((entry[1] === true) ? "Yes" : "No") : entry[1].toString()
+
+                                        [true, false].includes(entry[1]) ? ((entry[1] === true) ? "Yes" : "No") : entry[1].toString()
+                                    }
+
+                                </TableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-
-
-                            {entries.map((entry) => (
-                                <TableRow key={entry[0]}>
-                                    <TableCell className="text-left" component="th" scope="row">
-
-                                        {handleField(entry[0])}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        {
-                                            // [true, false].includes(entry[1]) ? ((entry[1] === true) ? "Yes" : "No") : entry[1].toString()
-                                            [true, false].includes(entry[1]) ? ((entry[1] === true) ? "Yes" : "No") : entry[1].toString()
-                                        }
-
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                {store.mediaFile && (
-                    <>
-                        <Typography component="h2" variant="h5">
-                            📦 Media
-                        </Typography>
-                        <List>
-                            {store.mediaFile.map((f, index) => (
-                                <ListItem key={index}>
-                                    <ListItemIcon>
-                                        <InsertDriveFile/>
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={f.name} secondary={f.size}
-                                    />
-                                    <img className={`text-center`}
-                                         src={URL.createObjectURL(f)}
-                                         alt={f.name}
-                                         style={{
-                                             height: '200px',
-                                         }}
-                                    />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </>
-                )}
-                <PrimaryButton onClick={onSubmit}>Submit</PrimaryButton>
-                <Link to="/">Start over</Link>
-            </WrapContainer>
-        </>
-    );
-};
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            {store.mediaFile && (
+                <>
+                    <Typography component="h2" variant="h5">
+                        📦 Media
+                    </Typography>
+                    <List>
+                        {store.mediaFile.map((f, index) => (
+                            <ListItem key={index}>
+                                <ListItemIcon>
+                                    <InsertDriveFile/>
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={f.name} secondary={f.size}
+                                />
+                                <img className={`text-center`}
+                                     src={URL.createObjectURL(f)}
+                                     alt={f.name}
+                                     style={{
+                                         height: '200px',
+                                     }}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                </>
+            )}
+            <PrimaryButton onClick={onSubmit}>Submit</PrimaryButton>
+            <Link to="/announceform">Start over</Link>
+        </WrapContainer>
+    </>
+)
+}
+;
 
 export default ConfirmPage

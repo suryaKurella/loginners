@@ -25,7 +25,10 @@ const FrontPageContent = () => {
 
                 {/*<div className={`${classes.frontPageDesc} `}>*/}
                 <Typography variant="h3"
-                            style={{fontFamily: 'Monospace, serif',  position: "relative",}}/*style= {{position: "relative",left:'20%' ,top:'60vh', zIndex:200, fontFamily:'Monospace, serif'}}*/>
+                            style={{
+                                fontFamily: 'Monospace, serif',
+                                position: "relative",
+                            }}/*style= {{position: "relative",left:'20%' ,top:'60vh', zIndex:200, fontFamily:'Monospace, serif'}}*/>
                     A One Stop Solution for your
                 </Typography>
                 {/*<div className={`${classes['frontPageDesc-bottom']}`}>*/}
@@ -33,7 +36,8 @@ const FrontPageContent = () => {
                     fontFamily: 'Monospace, serif',
                     position: "relative",
                     left: '21%'
-                }} className={'p-3'}/*style= {{position: "relative",left:'35%' ,top:'60vh', zIndex:200, fontFamily:'Monospace, serif'}}*/>
+                }}
+                            className={'p-3'}/*style= {{position: "relative",left:'35%' ,top:'60vh', zIndex:200, fontFamily:'Monospace, serif'}}*/>
                     Broadcasting
                 </Typography>
 
